@@ -12,6 +12,10 @@ class User(AbstractUser):
 
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='guest')
 
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
+
 
 class Machine(models.Model):
     """Машина"""
@@ -30,8 +34,8 @@ class Machine(models.Model):
     consignee = models.CharField(max_length=120, verbose_name='Грузополучатель', blank=True, null=True)
     delivery_address = models.CharField(max_length=255, verbose_name='Адрес поставки', blank=True, null=True)
     equipment = models.CharField(max_length=255, verbose_name='Комплектация', blank=True, null=True)
-    client = models.ForeignKey('Client', verbose_name='Клиент', related_name='machines', on_delete=models.CASCADE, blank=True, null=True)
-    service_company = models.ForeignKey('ServiceCompany', verbose_name='Сервисная компания')
+    client = models.ForeignKey('Client', verbose_name='Клиент', related_name='machines', blank=True, null=True, on_delete=models.CASCADE)
+    service_company = models.ForeignKey('ServiceCompany', verbose_name='Сервисная компания', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.machine_serial_number
@@ -63,7 +67,7 @@ class Complaints(models.Model):
     """Рекламации"""
     machine = models.ForeignKey('Machine', on_delete=models.CASCADE)
     date_of_refusal = models.CharField(max_length=120, verbose_name='Дата отказа') # возможно нужно dateTimeField
-    complaints_development = models.IntegerField(max_length=120, verbose_name='Наработка')
+    complaints_development = models.IntegerField(verbose_name='Наработка')
     failure_node = models.ForeignKey('FailureNode', verbose_name='Узел отказа', on_delete=models.CASCADE)
     description_of_the_failure = models.TextField(verbose_name='Описание отказа')
     recovery_method = models.ForeignKey('RecoveryMethod', verbose_name='Способ восстановления', on_delete=models.CASCADE)
@@ -89,10 +93,6 @@ class Complaints(models.Model):
         verbose_name = 'Рекламация'
         verbose_name_plural = 'Рекламации'
 
-#
-# class Directories(models.Model):
-#     """Справочники"""
-#     model_technique = models.ForeignKey(ModelTechique)
 
 class Client(models.Model):
     """Клиент"""
@@ -102,6 +102,10 @@ class Client(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = 'Клиент'
+        verbose_name_plural = 'Клиенты'
+
 class EquimentModel(models.Model):
     """Модель техники"""
     title = models.CharField(max_length=120, verbose_name='Название')
@@ -109,6 +113,10 @@ class EquimentModel(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = 'Модель техники'
+        verbose_name_plural = 'Модели техники'
 
 class EngineModel(models.Model):
     """Модель двигателя"""
@@ -118,6 +126,10 @@ class EngineModel(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = 'Модель двигателя'
+        verbose_name_plural = 'Модели двигателей'
+
 class TransmissionModel(models.Model):
     """Модель трансмиссии"""
     title = models.CharField(max_length=120, verbose_name='Название')
@@ -125,6 +137,10 @@ class TransmissionModel(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = 'Модель трансмиссии'
+        verbose_name_plural = 'Модели трансмиссий'
 
 class DrivingBridgeModel(models.Model):
     """Модель ведущего моста"""
@@ -134,6 +150,10 @@ class DrivingBridgeModel(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = 'Модель ведущего моста'
+        verbose_name_plural = 'Модели ведущего моста'
+
 class ControlledBridgeModel(models.Model):
     """Модель управляемого моста"""
     title = models.CharField(max_length=120, verbose_name='Название')
@@ -141,6 +161,10 @@ class ControlledBridgeModel(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = 'Модель управляемого моста'
+        verbose_name_plural = 'Модели управляемого моста'
 
 class ServiceCompany(models.Model):
     """Сервисная компания"""
@@ -150,6 +174,10 @@ class ServiceCompany(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = 'Сервисная компания'
+        verbose_name_plural = 'Сервисная компания'
+
 class MaintenanceType(models.Model):
     """Вид ТО"""
     title = models.CharField(max_length=120, verbose_name='Название')
@@ -157,6 +185,10 @@ class MaintenanceType(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = 'Вид ТО'
+        verbose_name_plural = 'Вид ТО'
 
 class FailureNode(models.Model):
     """Узел отказа"""
@@ -166,6 +198,10 @@ class FailureNode(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = 'Узел отказа'
+        verbose_name_plural = 'Узлы отказа'
+
 class RecoveryMethod(models.Model):
     """Способ восстановления"""
     title = models.CharField(max_length=120, verbose_name='Название')
@@ -173,3 +209,7 @@ class RecoveryMethod(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = 'Способ восстановления'
+        verbose_name_plural = 'Способы восстановления'
