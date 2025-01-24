@@ -255,28 +255,28 @@
             <div class="section">
                 <p style="text-align: center;">Таблица с данными</p>
                 <div class="tabs">
-                    <button onclick="showTab('machines')">Фильтр 1</button>
-                    <button onclick="showTab('maintenances')">Фильтр 2</button>
-                    <button onclick="showTab('complaints')">Фильтр 3</button>
+                    <button onclick="showTab('machines')">Общая информация</button>
+                    <button onclick="showTab('maintenances')">Техническое обслуживание</button>
+                    <button onclick="showTab('complaints')">Рекламации</button>
                 </div>
 
                 <div class="result-section">
-                    <div id="machines" class="result-table" style="display: none;">
-                        <table class="details-table">
-                            {% for machine in machines %}
+                    <div id="machines" style="display: none;">
+                        <table class="result-table">
                              <tr>
                                 <th data-label="">Заводской номер машины</th>
-                                <td data-label="">{{ machine.machine_serial_number }}</td>
-                            </tr>
-                            <tr>
                                 <th data-label="">Модель техники</th>
+                            </tr>
+                            {% for machine in machines %}
+                            <tr>
+                                <td data-label="">{{ machine.machine_serial_number }}</td>
                                 <td data-label="">{{ machine.model_of_equipment }}</td>
                             </tr>
                             {% endfor %}
                         </table>
                     </div>
 
-                    <div id="maintenances" class="result-table" style="display: none;">
+                    <div id="maintenances" style="display: none;">
                         <table class="details-table">
                             {% for maintenance in maintenances %}
                             <tr>
@@ -291,7 +291,7 @@
                         </table>
                     </div>
 
-                    <div id="complaints" class="result-table" style="display: none;">
+                    <div id="complaints" style="display: none;">
                         <table class="details-table">
                             {% for complaint in complaints %}
                             <tr>

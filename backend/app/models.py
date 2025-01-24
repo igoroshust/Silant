@@ -38,7 +38,7 @@ class Machine(models.Model):
     service_company = models.ForeignKey('ServiceCompany', verbose_name='Сервисная компания', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.machine_serial_number
+        return f'Машина {self.machine_serial_number}'
 
     class Meta:
         verbose_name = 'Машина'
