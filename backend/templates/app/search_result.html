@@ -264,18 +264,31 @@
                     <table class="result-table">
                         <thead>
                             <tr>
-                                <th>Поле 1</th>
-                                <th>Поле 2</th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
+                                <th>Заводской номер машины</th>
+                                <th>Модель техники</th>
+                                <th>Модель двигателя</th>
+                                <th>Заводской номер двигателя</th>
+                                <th>Модель трансмиссии</th>
+                                <th>Заводской номер трансмиссии</th>
+                                <th>Модель ведущего моста</th>
+                                <th>Заводской номер ведущего моста</th>
+                                <th>Модель управляемого моста</th>
+                                <th>Заводской номер управляемого моста</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for result in results %}
                                 <tr>
+                                    <td>{{ result.machine_serial_number }}</td>
                                     <td>{{ result.model_of_equipment }}</td>
                                     <td>{{ result.engine_model }}</td>
+                                    <td>{{ result.engine_serial_number }}</td>
+                                    <td>{{ result.transmission_model }}</td>
+                                    <td>{{ result.transmission_serial_number }}</td>
+                                    <td>{{ result.model_of_the_drivig_bridge }}</td>
+                                    <td>{{ result.driving_bridge_serial_number }}</td>
+                                    <td>{{ result.model_of_a_controlled_bridge }}</td>
+                                    <td>{{ result.controlled_bridge_serial_number }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
