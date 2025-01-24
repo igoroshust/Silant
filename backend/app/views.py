@@ -2,11 +2,8 @@ from django.shortcuts import render
 from .forms import SearchForm
 from .models import *
 
-def index(request):
-    return render(request, '../templates/app/index.html')
-
-def search(request):
-    return render(request, '../templates/app/search_result.html')
+# def index(request):
+#     return render(request, '../templates/app/index.html')
 
 def main(request):
     return render(request, '../templates/app/main.html')
@@ -17,7 +14,7 @@ def detail_machine(request):
 def about_machine(request):
     return render(request, '../templates/app/about_machine.html')
 
-def search_view(request):
+def index_view(request):
     form = SearchForm()
     results = []
 
@@ -28,4 +25,4 @@ def search_view(request):
             # Выполняем поск в базе данных
             results = Machine.objects.filter(machine_serial_number__icontains=query)
 
-    return render(request, '../templates/app/search_result.html', {'form': form, 'results': results})
+    return render(request, '../templates/app/index.html', {'form': form, 'results': results})

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Первичный Экран до авторизации</title>
+    <title>Результаты поиска</title>
 
     <style>
          @import url('https://fonts.googleapis.com/css2?family=PT+Astra+Sans&display=swap');
@@ -186,6 +186,20 @@
         .form-group button:hover {
             background-color: #a50a0d;
         }
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            box-sizing: border-box;
+        }
+        .details-table, .details-table th, .details-table td {
+            border: 1px solid #163E6C;
+        }
+        .details-table th, .details-table td {
+            padding: 10px;
+            text-align: left;
+            box-sizing: border-box;
+        }
 
         @media (min-width: 600px) {
             .search-section {
@@ -230,6 +244,23 @@
                 margin: 5px 0;
                 width: 100%;
             }
+            .details-table, .details-table th, .details-table td {
+                display: block;
+                width: 100%;
+            }
+            .details-table td {
+                border-bottom: 1px solid #163E6C !important;
+            }
+
+            .details-table th, .details-table td {
+                text-align: left;
+                padding: 10px;
+                border: none;
+
+            }
+            .details-table th:last-child, .details-table td:last-child {
+                border-bottom: none;
+            }
         }
     </style>
 </head>
@@ -246,12 +277,13 @@
         </div>
         <div class="content">
             <p>Проверьте комплектацию и технические характеристики техники Силант</p>
-            <div class="search-section">
-                <label for="serial-number">Заводской номер:</label>
-                <input type="text" id="serial-number" placeholder="поле ввода">
+            <form method="get" action="{% url 'index' %}" class="search-section">
+                {{ form.as_p }}
                 <button>Кнопка (поиск)</button>
-            </div>
+            </form>
         </div>
+
+        {% if results %}
         <label>Результаты поиска</label>
         <div class="main-panel">
             <div class=""> <!-- section small-->
@@ -260,43 +292,109 @@
             <div class="section">
                 <p style="text-align: center;">Таблица с данными</p>
                 <div class="result-section">
-                    <table class="result-table">
-                        <tr>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                        </tr>
-                        <tr>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                        </tr>
-                        <tr>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                        </tr>
-                        <tr>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                        </tr>
-                        <tr>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                        </tr>
-                    </table>
+<!--                    <table class="result-table">-->
+<!--                        <thead>-->
+<!--                            <tr>-->
+<!--                                <th>Заводской номер машины</th>-->
+<!--                                <th>Модель техники</th>-->
+<!--                                <th>Модель двигателя</th>-->
+<!--                                <th>Заводской номер двигателя</th>-->
+<!--                                <th>Модель трансмиссии</th>-->
+<!--                                <th>Заводской номер трансмиссии</th>-->
+<!--                                <th>Модель ведущего моста</th>-->
+<!--                                <th>Заводской номер ведущего моста</th>-->
+<!--                                <th>Модель управляемого моста</th>-->
+<!--                                <th>Заводской номер управляемого моста</th>-->
+<!--                            </tr>-->
+<!--                        </thead>-->
+<!--                        <tbody>-->
+<!--                            {% for result in results %}-->
+<!--                                <tr>-->
+<!--                                    <td>{{ result.machine_serial_number }}</td>-->
+<!--                                    <td>{{ result.model_of_equipment }}</td>-->
+<!--                                    <td>{{ result.engine_model }}</td>-->
+<!--                                    <td>{{ result.engine_serial_number }}</td>-->
+<!--                                    <td>{{ result.transmission_model }}</td>-->
+<!--                                    <td>{{ result.transmission_serial_number }}</td>-->
+<!--                                    <td>{{ result.model_of_the_drivig_bridge }}</td>-->
+<!--                                    <td>{{ result.driving_bridge_serial_number }}</td>-->
+<!--                                    <td>{{ result.model_of_a_controlled_bridge }}</td>-->
+<!--                                    <td>{{ result.controlled_bridge_serial_number }}</td>-->
+<!--                                </tr>-->
+<!--                            {% endfor %}-->
+<!--                        </tbody>-->
+<!--                    </table>-->
+         <table class="details-table">
+             {% for result in results %}
+             <tr>
+                <th data-label="Модель техники">Модель техники</th>
+                <td data-label="Модель техники">{{ result.model_of_equipment }}</td>
+            </tr>
+             <tr>
+                <th data-label="Зав. № машины">Зав. № машины</th>
+                <td data-label="Зав. № машины">{{ result.machine_serial_number }}</td>
+            </tr>
+            <tr>
+                <th data-label="Модель двигателя">Модель двигателя</th>
+                <td data-label="Модель двигателя">{{ result.engine_model }}</td>
+            </tr>
+            <tr>
+                <th data-label="Зав. № двигателя">Зав. № двигателя</th>
+                <td data-label="Зав. № двигателя">{{ result.engine_serial_number }}</td>
+            </tr>
+            <tr>
+                <th data-label="Модель трансмиссии (производитель, артикул)">Модель трансмиссии (производитель, артикул)</th>
+                <td data-label="Модель трансмиссии (производитель, артикул)">{{ result.transmission_model }}</td>
+            </tr>
+            <tr>
+                <th data-label="Зав. № трансмиссии">Зав. № трансмиссии</th>
+                <td data-label="Зав. № трансмиссии">{{ result.transmission_serial_number }}</td>
+            </tr>
+            <tr>
+                <th data-label="Модель ведущего моста">Модель ведущего моста</th>
+                <td data-label="Модель ведущего моста">{{ result.model_of_the_drivig_bridge }}</td>
+            </tr>
+            <tr>
+                <th data-label="Зав. № ведущего моста">Зав. № ведущего моста</th>
+                <td data-label="Зав. № ведущего моста">{{ result.driving_bridge_serial_number }}</td>
+            </tr>
+            <tr>
+                <th data-label="Модель управляемого моста">Модель управляемого моста</th>
+                <td data-label="Модель управляемого моста">{{ result.model_of_a_controlled_bridge }}</td>
+            </tr>
+            <tr>
+                <th data-label="Зав. № управляемого моста">Зав. № управляемого моста</th>
+                <td data-label="Зав. № управляемого моста">{{ result.controlled_bridge_serial_number }}</td>
+            </tr>
+<!--            <tr>-->
+<!--                <th data-label="Дата отгрузки с завода">Дата отгрузки с завода</th>-->
+<!--                <td data-label="Дата отгрузки с завода">09.03.2022</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <th data-label="Покупатель">Покупатель</th>-->
+<!--                <td data-label="Покупатель">ИП Трудников С.В.</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <th data-label="Грузополучатель (конечный потребитель)">Грузополучатель (конечный потребитель)</th>-->
+<!--                <td data-label="Грузополучатель (конечный потребитель)">ИП Трудников С.В.</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <th data-label="Адрес поставки (эксплуатации)">Адрес поставки (эксплуатации)</th>-->
+<!--                <td data-label="Адрес поставки (эксплуатации)">п. Знаменский, Респ. Марий Эл</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <th data-label="Комплектация (доп. опции)">Комплектация (доп. опции)</th>-->
+<!--                <td data-label="Комплектация (доп. опции)">1. Гидролинии с БРС; 2. Дополнительеная установка кабины</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <th data-label="Сервисная компания">Сервисная компания</th>-->
+<!--                <td data-label="Сервисная компания">ООО Промышленная техника</td>-->
+<!--            </tr>-->
+             {% endfor %}
+        </table>
+                    {% else %}
+                        <p>Нет результатов запроса</p>
+                    {% endif %}
                 </div>
             </div>
         </div>
