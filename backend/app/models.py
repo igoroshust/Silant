@@ -20,7 +20,7 @@ class User(AbstractUser):
 class Machine(models.Model):
     """Машина"""
     machine_serial_number = models.CharField(max_length=120, verbose_name='Заводской номер машины')
-    model_of_equipment = models.ForeignKey('EquimentModel', verbose_name='Модель техники', on_delete=models.CASCADE)
+    model_of_equipment = models.ForeignKey('EquipmentModel', verbose_name='Модель техники', on_delete=models.CASCADE)
     engine_model = models.ForeignKey('EngineModel', verbose_name='Модель двигателя', on_delete=models.CASCADE)
     engine_serial_number = models.CharField(max_length=120, verbose_name='Заводской номер двигателя')
     transmission_model = models.ForeignKey('TransmissionModel', verbose_name='Модель трансмиссии', on_delete=models.CASCADE)
@@ -47,7 +47,7 @@ class Machine(models.Model):
 
 class Maintenance(models.Model):
     """Техническое обслуживание"""
-    machine = models.ForeignKey('Machine', verbose_name='Экземпляр машины', on_delete=models.CASCADE)
+    machine = models.ForeignKey('Machine', verbose_name='Машина', on_delete=models.CASCADE)
     type_of_maintenance = models.ForeignKey('MaintenanceType', verbose_name='Вид ТО', on_delete=models.CASCADE)
     date_of_maintenance = models.DateTimeField(verbose_name='Дата проведения ТО')
     maintenance_development = models.IntegerField(verbose_name='Наработка')
@@ -65,7 +65,7 @@ class Maintenance(models.Model):
 
 class Complaints(models.Model):
     """Рекламации"""
-    machine = models.ForeignKey('Machine', on_delete=models.CASCADE)
+    machine = models.ForeignKey('Machine', verbose_name='Машина', on_delete=models.CASCADE)
     date_of_refusal = models.CharField(max_length=120, verbose_name='Дата отказа') # возможно нужно dateTimeField
     complaints_development = models.IntegerField(verbose_name='Наработка')
     failure_node = models.ForeignKey('FailureNode', verbose_name='Узел отказа', on_delete=models.CASCADE)
@@ -106,13 +106,13 @@ class Client(models.Model):
         verbose_name = 'Клиент'
         verbose_name_plural = 'Клиенты'
 
-class EquimentModel(models.Model):
+class EquipmentModel(models.Model):
     """Модель техники"""
     title = models.CharField(max_length=120, verbose_name='Название')
     description = models.CharField(max_length=120, verbose_name='Описание')
 
     def __str__(self):
-        return self.name
+        return self.title
 
     class Meta:
         verbose_name = 'Модель техники'
@@ -124,7 +124,7 @@ class EngineModel(models.Model):
     description = models.CharField(max_length=120, verbose_name='Описание')
 
     def __str__(self):
-        return self.name
+        return self.title
 
     class Meta:
         verbose_name = 'Модель двигателя'
@@ -136,7 +136,7 @@ class TransmissionModel(models.Model):
     description = models.CharField(max_length=120, verbose_name='Описание')
 
     def __str__(self):
-        return self.name
+        return self.title
 
     class Meta:
         verbose_name = 'Модель трансмиссии'
@@ -148,7 +148,7 @@ class DrivingBridgeModel(models.Model):
     description = models.CharField(max_length=120, verbose_name='Описание')
 
     def __str__(self):
-        return self.name
+        return self.title
 
     class Meta:
         verbose_name = 'Модель ведущего моста'
@@ -160,7 +160,7 @@ class ControlledBridgeModel(models.Model):
     description = models.CharField(max_length=120, verbose_name='Описание')
 
     def __str__(self):
-        return self.name
+        return self.title
 
     class Meta:
         verbose_name = 'Модель управляемого моста'
@@ -172,7 +172,7 @@ class ServiceCompany(models.Model):
     description = models.CharField(max_length=120, verbose_name='Описание')
 
     def __str__(self):
-        return self.name
+        return self.title
 
     class Meta:
         verbose_name = 'Сервисная компания'
@@ -184,7 +184,7 @@ class MaintenanceType(models.Model):
     description = models.CharField(max_length=120, verbose_name='Описание')
 
     def __str__(self):
-        return self.name
+        return self.title
 
     class Meta:
         verbose_name = 'Вид ТО'
@@ -196,7 +196,7 @@ class FailureNode(models.Model):
     description = models.CharField(max_length=120, verbose_name='Описание')
 
     def __str__(self):
-        return self.name
+        return self.title
 
     class Meta:
         verbose_name = 'Узел отказа'
@@ -208,7 +208,7 @@ class RecoveryMethod(models.Model):
     description = models.CharField(max_length=120, verbose_name='Описание')
 
     def __str__(self):
-        return self.name
+        return self.title
 
     class Meta:
         verbose_name = 'Способ восстановления'

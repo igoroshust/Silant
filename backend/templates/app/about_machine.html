@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Первичный Экран до авторизации</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=PT+Astra+Sans&display=swap');
+
+        body {
+            font-family: 'PT Astra Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #EBE6D6;
+            overflow-x: hidden;
+        }
+        .header, .footer {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background-color: #163E6C;
+            color: #EBE6D6;
+            box-sizing: border-box;
+        }
+        .header div, .footer div {
+            flex: 1;
+            text-align: center;
+        }
+        .header div:first-child, .footer div:first-child {
+            text-align: left;
+        }
+        .header div:last-child, .footer div:last-child {
+            text-align: right;
+        }
+        .container {
+            width: 100%;
+            padding: 15px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 0;
+            box-sizing: border-box;
+        }
+        .content {
+            border: 1px solid #163E6C;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #EBE6D6;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+        .main-panel {
+            border: 1px solid #163E6C;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #EBE6D6;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+        .main-panel .section {
+            border: 1px solid #163E6C;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+        .main-panel .section.small {
+            padding: 5px;
+            flex: 0 1 48%;
+        }
+        .main-panel .section.inline {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            border: none;
+            background-color: transparent;
+        }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        .tabs button {
+            padding: 10px;
+            background-color: #163E6C;
+            color: #EBE6D6;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin: 0 5px;
+        }
+        .tabs button:hover {
+            background-color: #0f2a4a;
+        }
+        .result-section {
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            box-sizing: border-box;
+        }
+        .result-table, .result-table th, .result-table td {
+            border: 1px solid #163E6C;
+        }
+        .result-table th, .result-table td {
+            padding: 10px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #163E6C;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 400px;
+            box-sizing: border-box;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #163E6C;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: #D20A11;
+            color: #EBE6D6;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            box-sizing: border-box;
+        }
+        .form-group button:hover {
+            background-color: #a50a0d;
+        }
+        @media (min-width: 600px) {
+            .search-section {
+                flex-direction: row;
+                align-items: center;
+            }
+            .search-section input {
+                flex: 1;
+                margin-right: 10px;
+                margin-bottom: 0;
+            }
+        }
+        @media (max-width: 600px) {
+            .header, .footer {
+                flex-direction: column;
+                text-align: center;
+            }
+            .header div, .footer div {
+                text-align: center;
+            }
+            .header div:first-child, .footer div:first-child, .header div:last-child, .footer div:last-child {
+                text-align: center;
+            }
+            .search-section {
+                flex-direction: column;
+            }
+            .search-section input {
+                margin-right: 0;
+                margin-bottom: 10px;
+                padding: 15px;
+                font-size: 16px;
+            }
+            .search-section button {
+                padding: 15px;
+                font-size: 16px;
+            }
+            .tabs {
+                flex-direction: column;
+            }
+            .tabs button {
+                margin: 5px 0;
+                width: 100%;
+            }
+            .main-panel .section.inline {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>логотип</div>
+        <div>+7-8352-20-12-09, telegram</div>
+        <div><button onclick="document.getElementById('authModal').style.display='flex'">выйти</button></div>
+    </div>
+    <div class="container">
+        <div class="content">
+            <p>Электронная сервисная книжка "Мой Силант"</p>
+        </div>
+        <label>Основная панель</label>
+        <div class="main-panel">
+            <div class="section inline">
+                <div class="section small">
+                    <p>Машина-1</p>
+                </div>
+                <div class="section small">
+                    <p>Заводской номер</p>
+                </div>
+            </div>
+            <div class="section small">
+                <p>Информация о проведённых ТО Вашей техники</p>
+            </div>
+            <div class="section">
+                <p style="text-align: center;">Таблица с данными</p>
+                <div class="tabs">
+                    <button>Фильтр 1</button>
+                    <button>Фильтр 2</button>
+                    <button>Фильтр 3</button>
+                </div>
+                <div class="result-section">
+                    <table class="result-table">
+                        <tr>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                        </tr>
+                        <tr>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                        </tr>
+                        <tr>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                        </tr>
+                        <tr>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                        </tr>
+                        <tr>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div>+7-8352-20-12-09, telegram</div>
+        <div>Мой Силант 2022</div>
+    </div>
+
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <form>
+                <div class="form-group">
+                    <label for="login">Логин</label>
+                    <input type="text" id="login" placeholder="Введите логин">
+                </div>
+                <div class="form-group">
+                    <label for="password">Пароль</label>
+                    <input type="password" id="password" placeholder="Введите пароль">
+                </div>
+                <div class="form-group">
+                    <button type="submit">Войти</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Close the modal when clicking outside of it
+        window.onclick = function(event) {
+            var modal = document.getElementById('authModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
