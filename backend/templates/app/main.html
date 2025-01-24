@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Первичный Экран до авторизации</title>
+    <title>Экран после авторизации</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=PT+Astra+Sans&display=swap');
 
@@ -157,6 +157,21 @@
         .form-group button:hover {
             background-color: #a50a0d;
         }
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            box-sizing: border-box;
+        }
+        .details-table, .details-table th, .details-table td {
+            border: 1px solid #163E6C;
+        }
+        .details-table th, .details-table td {
+            padding: 10px;
+            text-align: left;
+            box-sizing: border-box;
+        }
+
         @media (min-width: 600px) {
             .search-section {
                 flex-direction: row;
@@ -199,6 +214,23 @@
                 margin: 5px 0;
                 width: 100%;
             }
+            .details-table, .details-table th, .details-table td {
+                display: block;
+                width: 100%;
+            }
+            .details-table td {
+                border-bottom: 1px solid #163E6C !important;
+            }
+
+            .details-table th, .details-table td {
+                text-align: left;
+                padding: 10px;
+                border: none;
+
+            }
+            .details-table th:last-child, .details-table td:last-child {
+                border-bottom: none;
+            }
         }
     </style>
 </head>
@@ -223,48 +255,56 @@
             <div class="section">
                 <p style="text-align: center;">Таблица с данными</p>
                 <div class="tabs">
-                    <button>Фильтр 1</button>
-                    <button>Фильтр 2</button>
-                    <button>Фильтр 3</button>
+                    <button onclick="showTab('machines')">Фильтр 1</button>
+                    <button onclick="showTab('maintenances')">Фильтр 2</button>
+                    <button onclick="showTab('complaints')">Фильтр 3</button>
                 </div>
+
                 <div class="result-section">
-                    <table class="result-table">
-                        <tr>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                        </tr>
-                        <tr>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                        </tr>
-                        <tr>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                        </tr>
-                        <tr>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                        </tr>
-                        <tr>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
-                        </tr>
-                    </table>
+                    <div id="machines" class="result-table" style="display: none;">
+                        <table class="details-table">
+                            {% for machine in machines %}
+                             <tr>
+                                <th data-label="">Заводской номер машины</th>
+                                <td data-label="">{{ machine.machine_serial_number }}</td>
+                            </tr>
+                            <tr>
+                                <th data-label="">Модель техники</th>
+                                <td data-label="">{{ machine.model_of_equipment }}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+
+                    <div id="maintenances" class="result-table" style="display: none;">
+                        <table class="details-table">
+                            {% for maintenance in maintenances %}
+                            <tr>
+                                <th data-label="Машина">Машина</th>
+                                <td data-label="Машина">{{ maintenance.machine }}</td>
+                            </tr>
+                            <tr>
+                                <th data-label="Вид ТО">Вид ТО</th>
+                                <td data-label="Вид ТО">{{ maintenance.type_of_maintenance }}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+
+                    <div id="complaints" class="result-table" style="display: none;">
+                        <table class="details-table">
+                            {% for complaint in complaints %}
+                            <tr>
+                                <th data-label="Машина">Машина</th>
+                                <td data-label="Машина">{{ complaint.machine }}</td>
+                            </tr>
+                            <tr>
+                                <th data-label="Дата отказа">Дата отказа</th>
+                                <td data-label="Дата отказа">{{ complaint.date_of_refusal }}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -292,7 +332,20 @@
         </div>
     </div>
         <script>
-        // Close the modal when clicking outside of it
+            // Функция для отображения выбранного таба
+            function showTab(tabName) {
+                document.getElementById('machines').style.display = 'none';
+                document.getElementById('maintenances').style.display = 'none';
+                document.getElementById('complaints').style.display = 'none';
+
+                // Отображаем выбранную таблицу
+                document.getElementById(tabName).style.display = 'block';
+            }
+
+            // По умолчанию показываем первую таблицу
+            showTab('machines');
+
+        // Закрытие модального окна при клике на бэкграунд
         window.onclick = function(event) {
             var modal = document.getElementById('authModal');
             if (event.target == modal) {

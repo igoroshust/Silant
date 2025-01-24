@@ -66,7 +66,7 @@ class Maintenance(models.Model):
 class Complaints(models.Model):
     """Рекламации"""
     machine = models.ForeignKey('Machine', verbose_name='Машина', on_delete=models.CASCADE)
-    date_of_refusal = models.CharField(max_length=120, verbose_name='Дата отказа') # возможно нужно dateTimeField
+    date_of_refusal = models.DateTimeField(max_length=120, verbose_name='Дата отказа') # в ТЗ textfield!!!
     complaints_development = models.IntegerField(verbose_name='Наработка')
     failure_node = models.ForeignKey('FailureNode', verbose_name='Узел отказа', on_delete=models.CASCADE)
     description_of_the_failure = models.TextField(verbose_name='Описание отказа')
@@ -87,7 +87,7 @@ class Complaints(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.machine.machine_serial_number} - {self.failure_node.name}'
+        return f'{self.machine.machine_serial_number} - {self.failure_node.title}'
 
     class Meta:
         verbose_name = 'Рекламация'
