@@ -247,7 +247,7 @@
         <label>Основная панель</label>
         <div class="main-panel">
             <div class="section small">
-                <p>Клиент</p>
+                <p>Клиент: {{ user.username }}</p>
             </div>
             <div class="section small">
                 <p>Информация о комплектации</p>
@@ -266,41 +266,97 @@
                              <tr>
                                 <th data-label="">Заводской номер машины</th>
                                 <th data-label="">Модель техники</th>
+                                <th data-label="">Модель двигателя</th>
+                                <th data-label="">Заводской номер двигателя</th>
+                                <th data-label="">Модель трансмиссии</th>
+                                <th data-label="">Заводской номер трансмиссии</th>
+                                <th data-label="">Модель ведущего моста</th>
+                                <th data-label="">Заводской номер ведущего моста</th>
+                                <th data-label="">Модель управляемого моста</th>
+                                <th data-label="">Заводской номер управляемого моста</th>
+                                <th data-label="">Договор поставки</th>
+                                <th data-label="">Дата отгрузки с завода</th>
+                                <th data-label="">Грузополучатель</th>
+                                <th data-label="">Адрес поставки</th>
+                                <th data-label="">Комплектация</th>
+                                <th data-label="">Клиент</th>
+                                <th data-label="">Сервисная компания</th>
                             </tr>
                             {% for machine in machines %}
                             <tr>
                                 <td data-label="">{{ machine.machine_serial_number }}</td>
                                 <td data-label="">{{ machine.model_of_equipment }}</td>
+                                <td data-label="">{{ machine.engine_model }}</td>
+                                <td data-label="">{{ machine.engine_serial_number }}</td>
+                                <td data-label="">{{ machine.transmission_model }}</td>
+                                <td data-label="">{{ machine.transmission_serial_number }}</td>
+                                <td data-label="">{{ machine.model_of_the_drivig_bridge }}</td>
+                                <td data-label="">{{ machine.driving_bridge_serial_number }}</td>
+                                <td data-label="">{{ machine.model_of_a_controlled_bridge }}</td>
+                                <td data-label="">{{ machine.controlled_bridge_serial_number }}</td>
+                                <td data-label="">{{ machine.supply_contract }}</td>
+                                <td data-label="">{{ machine.date_of_shipment }}</td>
+                                <td data-label="">{{ machine.consignee }}</td>
+                                <td data-label="">{{ machine.delivery_address }}</td>
+                                <td data-label="">{{ machine.equipment }}</td>
+                                <td data-label="">{{ machine.client }}</td>
+                                <td data-label="">{{ machine.service_company }}</td>
                             </tr>
                             {% endfor %}
                         </table>
                     </div>
 
                     <div id="maintenances" style="display: none;">
-                        <table class="details-table">
+                        <table class="result-table">
+                            <tr>
+                                <th data-label="">Машина</th>
+                                <th data-label="">Вид ТО</th>
+                                <th data-label="">Дата проведения ТО</th>
+                                <th data-label="">Наработка</th>
+                                <th data-label="">Номер заказ-наряда</th>
+                                <th data-label="">Дата заказ-наряда</th>
+                                <th data-label="">Сервисная компания</th>
+                            </tr>
                             {% for maintenance in maintenances %}
                             <tr>
-                                <th data-label="Машина">Машина</th>
-                                <td data-label="Машина">{{ maintenance.machine }}</td>
-                            </tr>
-                            <tr>
-                                <th data-label="Вид ТО">Вид ТО</th>
-                                <td data-label="Вид ТО">{{ maintenance.type_of_maintenance }}</td>
+                                <td data-label="">{{ maintenance.machine }}</td>
+                                <td data-label="">{{ maintenance.type_of_maintenance }}</td>
+                                <td data-label="">{{ maintenance.date_of_maintenance }}</td>
+                                <td data-label="">{{ maintenance.maintenance_development }}</td>
+                                <td data-label="">{{ maintenance.order_number }}</td>
+                                <td data-label="">{{ maintenance.order_date }}</td>
+                                <td data-label="">{{ maintenance.service_company }}</td>
                             </tr>
                             {% endfor %}
                         </table>
                     </div>
 
                     <div id="complaints" style="display: none;">
-                        <table class="details-table">
+                        <table class="result-table">
+                            <tr>
+                                <th data-label="">Машина</th>
+                                <th data-label="">Дата отказа</th>
+                                <th data-label="">Наработка</th>
+                                <th data-label="">Узел отказа</th>
+                                <th data-label="">Описание отказа</th>
+                                <th data-label="">Способ восстановления</th>
+                                <th data-label="">Используемые запчасти</th>
+                                <th data-label="">Дата восстановления</th>
+                                <th data-label="">Время простоя техники</th>
+                                <th data-label="">Сервисная компания</th>
+                            </tr>
                             {% for complaint in complaints %}
                             <tr>
-                                <th data-label="Машина">Машина</th>
-                                <td data-label="Машина">{{ complaint.machine }}</td>
-                            </tr>
-                            <tr>
-                                <th data-label="Дата отказа">Дата отказа</th>
-                                <td data-label="Дата отказа">{{ complaint.date_of_refusal }}</td>
+                                <td data-label="">{{ complaint.machine }}</td>
+                                <td data-label="">{{ complaint.date_of_refusal }}</td>
+                                <td data-label="">{{ complaint.complaints_development }}</td>
+                                <td data-label="">{{ complaint.failure_node }}</td>
+                                <td data-label="">{{ complaint.description_of_the_failure }}</td>
+                                <td data-label="">{{ complaint.recovery_method }}</td>
+                                <td data-label="">{{ complaint.used_spare_parts }}</td>
+                                <td data-label="">{{ complaint.date_of_restoration }}</td>
+                                <td data-label="">{{ complaint.machine_downtime }}</td>
+                                <td data-label="">{{ complaint.service_company }}</td>
                             </tr>
                             {% endfor %}
                         </table>

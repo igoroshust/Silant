@@ -73,7 +73,7 @@ class Complaints(models.Model):
     recovery_method = models.ForeignKey('RecoveryMethod', verbose_name='Способ восстановления', on_delete=models.CASCADE)
     used_spare_parts = models.TextField(verbose_name='Используемые запасные части', blank=True, null=True)
     date_of_restoration = models.DateTimeField(verbose_name='Дата восстановления') # возможно нужно dateTimeField
-    machine_downtime = models.TextField(verbose_name='Время простоя техники', editable=False) # возможно нужно dateTimeField или IntegerField
+    machine_downtime = models.TextField(verbose_name='Время простоя техники') # возможно нужно dateTimeField или IntegerField
     service_company = models.ForeignKey('ServiceCompany', verbose_name='Сервисная компания', on_delete=models.CASCADE)
     # service_company = models.TextField(verbose_name='Сервисная компания') # так указано в ТЗ, но странно
 
