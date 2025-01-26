@@ -171,6 +171,11 @@
             text-align: left;
             box-sizing: border-box;
         }
+        .description-cell {
+            text-decoration: underline;
+            text-decoration-style: dotted;
+            cursor: pointer;
+        }
 
         @media (min-width: 600px) {
             .search-section {
@@ -291,26 +296,26 @@
                             {% for machine in machines %}
                             <tr>
                                 <td><a href="{% url 'about_machine' machine.id %}">{{ machine.machine_serial_number }}</a></td>
-                                <td data-label="">{{ machine.model_of_equipment }}</td>
-                                <td data-label="">{{ machine.engine_model }}</td>
-                                <td data-label="">{{ machine.engine_serial_number }}</td>
-                                <td data-label="">{{ machine.transmission_model }}</td>
-                                <td data-label="">{{ machine.transmission_serial_number }}</td>
-                                <td data-label="">{{ machine.model_of_the_drivig_bridge }}</td>
-                                <td data-label="">{{ machine.driving_bridge_serial_number }}</td>
-                                <td data-label="">{{ machine.model_of_a_controlled_bridge }}</td>
-                                <td data-label="">{{ machine.controlled_bridge_serial_number }}</td>
-                                <td data-label="">{{ machine.supply_contract }}</td>
-                                <td data-label="">{{ machine.date_of_shipment }}</td>
-                                <td data-label="">{{ machine.consignee }}</td>
-                                <td data-label="">{{ machine.delivery_address }}</td>
-                                <td data-label="">{{ machine.equipment }}</td>
-                                <td data-label="">{{ machine.client }}</td>
-                                <td data-label="">{{ machine.service_company }}</td>
+                                <td data-model-type="equipment" data-model-id="{{ machine.model_of_equipment.id }}">{{ machine.model_of_equipment }}</td>
+                                <td data-model-type="engine" data-model-id="{{ machine.engine_model.id }}">{{ machine.engine_model }}</td>
+                                <td>{{ machine.engine_serial_number }}</td>
+                                <td data-model-type="transmission" data-model-id="{{ machine.transmission_model.id }}">{{ machine.transmission_model }}</td>
+                                <td>{{ machine.transmission_serial_number }}</td>
+                                <td data-model-type="driving_bridge" data-model-id="{{ machine.model_of_the_drivig_bridge.id }}">{{ machine.model_of_the_drivig_bridge }}</td>
+                                <td>{{ machine.driving_bridge_serial_number }}</td>
+                                <td data-model-type="controlled_bridge" data-model-id="{{ machine.model_of_a_controlled_bridge.id }}">{{ machine.model_of_a_controlled_bridge }}</td>
+                                <td>{{ machine.controlled_bridge_serial_number }}</td>
+                                <td>{{ machine.supply_contract }}</td>
+                                <td>{{ machine.date_of_shipment }}</td>
+                                <td>{{ machine.consignee }}</td>
+                                <td>{{ machine.delivery_address }}</td>
+                                <td>{{ machine.equipment }}</td>
+                                <td>{{ machine.client }}</td>
+                                <td>{{ machine.service_company }}</td>
                             </tr>
                             {% empty %}
                             <tr>
-                                <td colspan="10">Нет машин для отображения.</td>
+                                <td colspan="16">Нет машин для отображения.</td>
                             </tr>
                             {% endfor %}
                         </table>
@@ -330,7 +335,7 @@
                             {% for maintenance in maintenances %}
                             <tr>
                                 <td><a href="{% url 'about_machine' maintenance.machine.id %}">{{ maintenance.machine.machine_serial_number }}</a></td>
-                                <td data-label="">{{ maintenance.type_of_maintenance }}</td>
+                                <td data-label="" data-model-type="maintenance_type" data-model-id="{{ maintenance.type_of_maintenance.id }}">{{ maintenance.type_of_maintenance }}</td>
                                 <td data-label="">{{ maintenance.date_of_maintenance }}</td>
                                 <td data-label="">{{ maintenance.maintenance_development }}</td>
                                 <td data-label="">{{ maintenance.order_number }}</td>
@@ -360,13 +365,13 @@
                                 <td><a href="{% url 'about_machine' complaint.machine.id %}">{{ complaint.machine.machine_serial_number }}</a></td>
                                 <td data-label="">{{ complaint.date_of_refusal }}</td>
                                 <td data-label="">{{ complaint.complaints_development }}</td>
-                                <td data-label="">{{ complaint.failure_node }}</td>
+                                <td data-model-type="failure_node" data-model-id="{{ complaint.failure_node.id }}">{{ complaint.failure_node }}</td>
                                 <td data-label="">{{ complaint.description_of_the_failure }}</td>
-                                <td data-label="">{{ complaint.recovery_method }}</td>
+                                <td data-model-type="recovery_method" data-model-id="{{ complaint.recovery_method.id }}">{{ complaint.recovery_method }}</td>
                                 <td data-label="">{{ complaint.used_spare_parts }}</td>
                                 <td data-label="">{{ complaint.date_of_restoration }}</td>
                                 <td data-label="">{{ complaint.machine_downtime }}</td>
-                                <td data-label="">{{ complaint.service_company }}</td>
+                                <td data-model-type="service_company" data-model-id="{{ complaint.service_company.id }}">{{ complaint.service_company }}</td>
                             </tr>
                             {% endfor %}
                         </table>
@@ -407,31 +412,36 @@
         <script>
 
             // Функция для отображения описания
-        function showDetails(description) {
-            document.getElementById('descriptionText').innerText = description;
-            document.getElementById('descriptionModal').style.display = 'flex';
-        }
-
-        // Добавляем обработчики событий для ячеек таблицы
-        document.querySelectorAll('.result-table td:not(:first-child)').forEach(function(cell) {
-            cell.addEventListener('click', function() {
-                const description = getDescriptionForCell(cell); // Получаем описание для ячейки
-                showDetails(description);
-            });
-        });
-
-        // Функция для получения описания в зависимости от содержимого ячейки
-        function getDescriptionForCell(cell) {
-            // Здесь вы можете добавить логику для получения описания из базы данных
-            // Например, если ячейка содержит модель, вы можете получить её описание
-            const model = cell.innerText; // Получаем текст ячейки
-            // Пример: возвращаем описание на основе модели
-            if (cell.dataset.label === 'Модель техники') {
-                return 'Описание модели техники: ' + model; // Замените на реальное описание
+            function showDetails(description) {
+                if (description) {
+                    document.getElementById('descriptionText').innerText = description;
+                    document.getElementById('descriptionModal').style.display = 'flex';
+                }
             }
-            // Добавьте другие условия для других ячеек
-            return 'Описание не найдено';
-        }
+
+            // Добавляем обработчики событий для ячеек таблицы
+            document.querySelectorAll('.result-table td[data-model-type]').forEach(function(cell) {
+                cell.classList.add('description-cell'); // Добавляем класс для стиля
+                cell.addEventListener('click', function() {
+                    const modelId = cell.dataset.modelId; // Получаем ID из data-атрибута
+                    const modelType = cell.dataset.modelType; // Получаем тип модели из data-атрибута
+
+                    // Выполняем AJAX-запрос для получения описания
+                    fetch(`/get_description/?model_type=${modelType}&model_id=${modelId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.description) {
+                                showDetails(data.description);
+                            } else {
+                                console.log('Описание отсутствует.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Ошибка:', error);
+                            showDetails('Ошибка при получении описания.');
+                        });
+                });
+            });
 
             // Функция для отображения выбранного таба
             function showTab(tabName) {

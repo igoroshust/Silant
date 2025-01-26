@@ -165,9 +165,23 @@
         .form-group button:hover {
             background-color: #a50a0d;
         }
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            box-sizing: border-box;
+        }
+        .details-table, .details-table th, .details-table td {
+            border: 1px solid #163E6C;
+        }
+        .details-table th, .details-table td {
+            padding: 10px;
+            text-align: left;
+            box-sizing: border-box;
+        }
         .description-cell {
             text-decoration: underline;
-            text-decoration-style: dashed;
+            text-decoration-style: dotted;
             cursor: pointer;
         }
 
@@ -233,7 +247,7 @@
         <div class="main-panel">
             <div class="section inline">
                 <div class="section small">
-                    <p>Машина-{{ machine.id }}</p>
+                    <p>Машина №{{ machine.id }}</p>
                 </div>
                 <div class="section small">
                     <p>Заводской номер: {{ machine.machine_serial_number }}</p>
@@ -252,42 +266,68 @@
 
                 <div class="result-section">
                     <div id="machines" style="display: none;">
-                        <table class="result-table">
-                             <tr>
-                                <th data-label="">Модель техники</th>
-                                <th data-label="">Модель двигателя</th>
-                                <th data-label="">Заводской номер двигателя</th>
-                                <th data-label="">Модель трансмиссии</th>
-                                <th data-label="">Заводской номер трансмиссии</th>
-                                <th data-label="">Модель ведущего моста</th>
-                                <th data-label="">Заводской номер ведущего моста</th>
-                                <th data-label="">Модель управляемого моста</th>
-                                <th data-label="">Заводской номер управляемого моста</th>
-                                <th data-label="">Дата отгрузки с завода</th>
-                                <th data-label="">Грузополучатель</th>
-                                <th data-label="">Адрес поставки</th>
-                                <th data-label="">Комплектация</th>
-                                <th data-label="">Клиент</th>
-                                <th data-label="">Сервисная компания</th>
-                            </tr>
-                            <tr>
-                                <td data-label="" data-model-type="equipment" data-model-id="{{ machine.model_of_equipment.id }}">{{ machine.model_of_equipment }}</td>
-                                <td data-label="" data-model-type="engine" data-model-id="{{ machine.engine_model.id }}">{{ machine.engine_model }}</td>
-                                <td data-label="">{{ machine.engine_serial_number }}</td>
-                                <td data-label="" data-model-type="transmission" data-model-id="{{ machine.transmission_model.id }}">{{ machine.transmission_model }}</td>
-                                <td data-label="">{{ machine.transmission_serial_number }}</td>
-                                <td data-label="" data-model-type="driving_bridge" data-model-id="{{ machine.model_of_the_drivig_bridge.id }}">{{ machine.model_of_the_drivig_bridge }}</td>
-                                <td data-label="">{{ machine.driving_bridge_serial_number }}</td>
-                                <td data-label="" data-model-type="controlled_bridge" data-model-id="{{ machine.model_of_a_controlled_bridge.id }}">{{ machine.model_of_a_controlled_bridge }}</td>
-                                <td data-label="">{{ machine.controlled_bridge_serial_number }}</td>
-                                <td data-label="">{{ machine.date_of_shipment }}</td>
-                                <td data-label="">{{ machine.consignee }}</td>
-                                <td data-label="">{{ machine.delivery_address }}</td>
-                                <td data-label="">{{ machine.equipment }}</td>
-                                <td data-label="">{{ machine.client }}</td>
-                                <td data-label="">{{ machine.service_company }}</td>
-                            </tr>
-                        </table>
+                   <table class="details-table">
+                        <tr>
+                            <th>Модель техники</th>
+                            <td data-model-type="equipment" data-model-id="{{ machine.model_of_equipment.id }}">{{ machine.model_of_equipment }}</td>
+                        </tr>
+                        <tr>
+                            <th>Модель двигателя</th>
+                            <td data-model-type="engine" data-model-id="{{ machine.engine_model.id }}">{{ machine.engine_model }}</td>
+                        </tr>
+                        <tr>
+                            <th>Заводской номер двигателя</th>
+                            <td>{{ machine.engine_serial_number }}</td>
+                        </tr>
+                        <tr>
+                            <th>Модель трансмиссии</th>
+                            <td data-model-type="transmission" data-model-id="{{ machine.transmission_model.id }}">{{ machine.transmission_model }}</td>
+                        </tr>
+                        <tr>
+                            <th>Заводской номер трансмиссии</th>
+                            <td>{{ machine.transmission_serial_number }}</td>
+                        </tr>
+                        <tr>
+                            <th>Модель ведущего моста</th>
+                            <td data-model-type="driving_bridge" data-model-id="{{ machine.model_of_the_drivig_bridge.id }}">{{ machine.model_of_the_drivig_bridge }}</td>
+                        </tr>
+                        <tr>
+                            <th>Заводской номер ведущего моста</th>
+                            <td>{{ machine.driving_bridge_serial_number }}</td>
+                        </tr>
+                        <tr>
+                            <th>Модель управляемого моста</th>
+                            <td data-model-type="controlled_bridge" data-model-id="{{ machine.model_of_a_controlled_bridge.id }}">{{ machine.model_of_a_controlled_bridge }}</td>
+                        </tr>
+                        <tr>
+                            <th>Заводской номер управляемого моста</th>
+                            <td>{{ machine.controlled_bridge_serial_number }}</td>
+                        </tr>
+                        <tr>
+                            <th>Дата отгрузки с завода</th>
+                            <td>{{ machine.date_of_shipment }}</td>
+                        </tr>
+                        <tr>
+                            <th>Грузополучатель</th>
+                            <td>{{ machine.consignee }}</td>
+                        </tr>
+                        <tr>
+                            <th>Адрес поставки</th>
+                            <td>{{ machine.delivery_address }}</td>
+                        </tr>
+                        <tr>
+                            <th>Комплектация</th>
+                            <td>{{ machine.equipment }}</td>
+                        </tr>
+                        <tr>
+                            <th>Клиент</th>
+                            <td>{{ machine.client }}</td>
+                        </tr>
+                        <tr>
+                            <th>Сервисная компания</th>
+                            <td>{{ machine.service_company }}</td>
+                        </tr>
+                    </table>
                     </div>
 
                     <div id="maintenances" style="display: none;">
@@ -314,32 +354,46 @@
                     </div>
 
                     <div id="complaints" style="display: none;">
-                        <table class="result-table">
-                            <tr>
-                                <th data-label="">Дата отказа</th>
-                                <th data-label="">Наработка</th>
-                                <th data-label="">Узел отказа</th>
-                                <th data-label="">Описание отказа</th>
-                                <th data-label="">Способ восстановления</th>
-                                <th data-label="">Используемые запчасти</th>
-                                <th data-label="">Дата восстановления</th>
-                                <th data-label="">Время простоя техники</th>
-                                <th data-label="">Сервисная компания</th>
-                            </tr>
-                            {% for complaint in complaints %}
-                            <tr>
-                                <td data-label="">{{ complaint.date_of_refusal }}</td>
-                                <td data-label="">{{ complaint.complaints_development }}</td>
-                                <td data-label="" data-model-type="failure_node" data-model-id="{{ complaint.failure_node.id }}">{{ complaint.failure_node }}</td>
-                                <td data-label="">{{ complaint.description_of_the_failure }}</td>
-                                <td data-label="" data-model-type="recovery_method" data-model-id="{{ complaint.recovery_method.id }}">{{ complaint.recovery_method }}</td>
-                                <td data-label="">{{ complaint.used_spare_parts }}</td>
-                                <td data-label="">{{ complaint.date_of_restoration }}</td>
-                                <td data-label="">{{ complaint.machine_downtime }}</td>
-                                <td data-label="" data-model-type="service_company" data-model-id="{{ complaint.service_company.id }}">{{ complaint.service_company }}</td>
-                            </tr>
-                            {% endfor %}
-                        </table>
+                            <table class="details-table">
+                                {% for complaint in complaints %}
+                                <tr>
+                                    <th>Дата отказа</th>
+                                    <td>{{ complaint.date_of_refusal }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Наработка</th>
+                                    <td>{{ complaint.complaints_development }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Узел отказа</th>
+                                    <td data-model-type="failure_node" data-model-id="{{ complaint.failure_node.id }}">{{ complaint.failure_node }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Описание отказа</th>
+                                    <td>{{ complaint.description_of_the_failure }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Способ восстановления</th>
+                                    <td data-model-type="recovery_method" data-model-id="{{ complaint.recovery_method.id }}">{{ complaint.recovery_method }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Используемые запчасти</th>
+                                    <td>{{ complaint.used_spare_parts }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Дата восстановления</th>
+                                    <td>{{ complaint.date_of_restoration }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Время простоя техники</th>
+                                    <td>{{ complaint.machine_downtime }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Сервисная компания</th>
+                                    <td data-model-type="service_company" data-model-id="{{ complaint.service_company.id }}">{{ complaint.service_company }}</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
                     </div>
                 </div>
             </div>
@@ -385,7 +439,7 @@
         }
 
         // Добавляем обработчики событий для ячеек таблицы
-        document.querySelectorAll('.result-table td').forEach(function(cell) {
+        document.querySelectorAll('.result-table td, .details-table td').forEach(function(cell) {
             const modelId = cell.dataset.modelId; // Получаем ID из data-атрибута
             const modelType = cell.dataset.modelType; // Получаем тип модели из data-атрибута
 

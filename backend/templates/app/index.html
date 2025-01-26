@@ -8,7 +8,7 @@
     <title>Результаты поиска</title>
 
     <style>
-         @import url('https://fonts.googleapis.com/css2?family=PT+Astra+Sans&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=PT+Astra+Sans&display=swap');
 
         body {
             font-family: 'PT Astra Sans', sans-serif;
@@ -104,36 +104,18 @@
         .main-panel .section.small {
             padding: 5px;
         }
-        .tabs {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 10px;
-        }
-        .tabs button {
-            padding: 10px;
-            background-color: #163E6C;
-            color: #EBE6D6;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            margin: 0 5px;
-        }
-        .tabs button:hover {
-            background-color: #0f2a4a;
-        }
-        .result-table {
+        .details-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
             box-sizing: border-box;
         }
-        .result-table, .result-table th, .result-table td {
+        .details-table, .details-table th, .details-table td {
             border: 1px solid #163E6C;
         }
-        .result-table th, .result-table td {
+        .details-table th, .details-table td {
             padding: 10px;
-            text-align: center;
+            text-align: left;
             box-sizing: border-box;
         }
         .modal {
@@ -186,19 +168,10 @@
         .form-group button:hover {
             background-color: #a50a0d;
         }
-        .details-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-            box-sizing: border-box;
-        }
-        .details-table, .details-table th, .details-table td {
-            border: 1px solid #163E6C;
-        }
-        .details-table th, .details-table td {
-            padding: 10px;
-            text-align: left;
-            box-sizing: border-box;
+        .description-cell {
+            text-decoration: underline;
+            text-decoration-style: dotted;
+            cursor: pointer;
         }
 
         @media (min-width: 600px) {
@@ -221,9 +194,6 @@
             .header div, .footer div {
                 text-align: center;
             }
-            .header div:first-child, .footer div:first-child, .header div:last-child, .footer div:last-child {
-                text-align: center;
-            }
             .search-section {
                 flex-direction: column;
             }
@@ -237,13 +207,6 @@
                 padding: 15px;
                 font-size: 16px;
             }
-            .tabs {
-                flex-direction: column;
-            }
-            .tabs button {
-                margin: 5px 0;
-                width: 100%;
-            }
             .details-table, .details-table th, .details-table td {
                 display: block;
                 width: 100%;
@@ -251,12 +214,10 @@
             .details-table td {
                 border-bottom: 1px solid #163E6C !important;
             }
-
             .details-table th, .details-table td {
                 text-align: left;
                 padding: 10px;
                 border: none;
-
             }
             .details-table th:last-child, .details-table td:last-child {
                 border-bottom: none;
@@ -270,7 +231,7 @@
         <div>логотип</div>
         <div>+7-8352-20-12-09, telegram</div>
         <div>
-             {% if user.is_authenticated %}
+            {% if user.is_authenticated %}
                 <form action="{% url 'logout' %}" method="post" style="display:inline;">
                     {% csrf_token %}
                     <button type="submit">Выйти</button>
@@ -292,116 +253,60 @@
             </form>
         </div>
 
-
         <label>Результаты поиска</label>
         <div class="main-panel">
-            <div class=""> <!-- section small-->
+            <div class="section">
                 <p>Информация о комплектации и технических характеристиках Вашей техники:</p>
             </div>
             <div class="section">
                 <p style="text-align: center;">Таблица с данными</p>
                 <div class="result-section" id="resultSection">
-<!--                    <table class="result-table">-->
-<!--                        <thead>-->
-<!--                            <tr>-->
-<!--                                <th>Заводской номер машины</th>-->
-<!--                                <th>Модель техники</th>-->
-<!--                                <th>Модель двигателя</th>-->
-<!--                                <th>Заводской номер двигателя</th>-->
-<!--                                <th>Модель трансмиссии</th>-->
-<!--                                <th>Заводской номер трансмиссии</th>-->
-<!--                                <th>Модель ведущего моста</th>-->
-<!--                                <th>Заводской номер ведущего моста</th>-->
-<!--                                <th>Модель управляемого моста</th>-->
-<!--                                <th>Заводской номер управляемого моста</th>-->
-<!--                            </tr>-->
-<!--                        </thead>-->
-<!--                        <tbody>-->
-<!--                            {% for result in results %}-->
-<!--                                <tr>-->
-<!--                                    <td>{{ result.machine_serial_number }}</td>-->
-<!--                                    <td>{{ result.model_of_equipment }}</td>-->
-<!--                                    <td>{{ result.engine_model }}</td>-->
-<!--                                    <td>{{ result.engine_serial_number }}</td>-->
-<!--                                    <td>{{ result.transmission_model }}</td>-->
-<!--                                    <td>{{ result.transmission_serial_number }}</td>-->
-<!--                                    <td>{{ result.model_of_the_drivig_bridge }}</td>-->
-<!--                                    <td>{{ result.driving_bridge_serial_number }}</td>-->
-<!--                                    <td>{{ result.model_of_a_controlled_bridge }}</td>-->
-<!--                                    <td>{{ result.controlled_bridge_serial_number }}</td>-->
-<!--                                </tr>-->
-<!--                            {% endfor %}-->
-<!--                        </tbody>-->
-<!--                    </table>-->
-         <table class="details-table">
-             {% for result in results %}
-             <tr>
-                <th data-label="Модель техники">Модель техники</th>
-                <td data-label="Модель техники">{{ result.model_of_equipment }}</td>
-            </tr>
-             <tr>
-                <th data-label="Зав. № машины">Зав. № машины</th>
-                <td data-label="Зав. № машины">{{ result.machine_serial_number }}</td>
-            </tr>
-            <tr>
-                <th data-label="Модель двигателя">Модель двигателя</th>
-                <td data-label="Модель двигателя">{{ result.engine_model }}</td>
-            </tr>
-            <tr>
-                <th data-label="Зав. № двигателя">Зав. № двигателя</th>
-                <td data-label="Зав. № двигателя">{{ result.engine_serial_number }}</td>
-            </tr>
-            <tr>
-                <th data-label="Модель трансмиссии (производитель, артикул)">Модель трансмиссии (производитель, артикул)</th>
-                <td data-label="Модель трансмиссии (производитель, артикул)">{{ result.transmission_model }}</td>
-            </tr>
-            <tr>
-                <th data-label="Зав. № трансмиссии">Зав. № трансмиссии</th>
-                <td data-label="Зав. № трансмиссии">{{ result.transmission_serial_number }}</td>
-            </tr>
-            <tr>
-                <th data-label="Модель ведущего моста">Модель ведущего моста</th>
-                <td data-label="Модель ведущего моста">{{ result.model_of_the_drivig_bridge }}</td>
-            </tr>
-            <tr>
-                <th data-label="Зав. № ведущего моста">Зав. № ведущего моста</th>
-                <td data-label="Зав. № ведущего моста">{{ result.driving_bridge_serial_number }}</td>
-            </tr>
-            <tr>
-                <th data-label="Модель управляемого моста">Модель управляемого моста</th>
-                <td data-label="Модель управляемого моста">{{ result.model_of_a_controlled_bridge }}</td>
-            </tr>
-            <tr>
-                <th data-label="Зав. № управляемого моста">Зав. № управляемого моста</th>
-                <td data-label="Зав. № управляемого моста">{{ result.controlled_bridge_serial_number }}</td>
-            </tr>
-<!--            <tr>-->
-<!--                <th data-label="Дата отгрузки с завода">Дата отгрузки с завода</th>-->
-<!--                <td data-label="Дата отгрузки с завода">09.03.2022</td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <th data-label="Покупатель">Покупатель</th>-->
-<!--                <td data-label="Покупатель">ИП Трудников С.В.</td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <th data-label="Грузополучатель (конечный потребитель)">Грузополучатель (конечный потребитель)</th>-->
-<!--                <td data-label="Грузополучатель (конечный потребитель)">ИП Трудников С.В.</td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <th data-label="Адрес поставки (эксплуатации)">Адрес поставки (эксплуатации)</th>-->
-<!--                <td data-label="Адрес поставки (эксплуатации)">п. Знаменский, Респ. Марий Эл</td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <th data-label="Комплектация (доп. опции)">Комплектация (доп. опции)</th>-->
-<!--                <td data-label="Комплектация (доп. опции)">1. Гидролинии с БРС; 2. Дополнительеная установка кабины</td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <th data-label="Сервисная компания">Сервисная компания</th>-->
-<!--                <td data-label="Сервисная компания">ООО Промышленная техника</td>-->
-<!--            </tr>-->
-             {% endfor %}
-        </table>
-                    {% if not results %}
+                    {% if results %}
+                    <table class="details-table">
+                        {% for result in results %}
+                        <tr>
+                            <th>Заводской номер машины</th>
+                            <td data-model-type="machine">{{ result.machine_serial_number }}</td>
+                        </tr>
+                        <tr>
+                            <th>Модель техники</th>
+                            <td data-model-type="equipment" data-model-id="{{ result.model_of_equipment.id }}">{{ result.model_of_equipment }}</td>
+                        </tr>
+                        <tr>
+                            <th>Модель двигателя</th>
+                            <td data-model-type="engine" data-model-id="{{ result.engine_model.id }}">{{ result.engine_model }}</td>
+                        </tr>
+                        <tr>
+                            <th>Заводской номер двигателя</th>
+                            <td>{{ result.engine_serial_number }}</td>
+                        </tr>
+                        <tr>
+                            <th>Модель трансмиссии</th>
+                            <td data-model-type="transmission" data-model-id="{{ result.transmission_model.id }}">{{ result.transmission_model }}</td>
+                        </tr>
+                        <tr>
+                            <th>Заводской номер трансмиссии</th>
+                            <td>{{ result.transmission_serial_number }}</td>
+                        </tr>
+                        <tr>
+                            <th>Модель ведущего моста</th>
+                            <td data-model-type="driving_bridge" data-model-id="{{ result.model_of_the_drivig_bridge.id }}">{{ result.model_of_the_drivig_bridge }}</td>
+                        </tr>
+                        <tr>
+                            <th>Заводской номер ведущего моста</th>
+                            <td>{{ result.driving_bridge_serial_number }}</td>
+                        </tr>
+                        <tr>
+                            <th>Модель управляемого моста</th>
+                            <td data-model-type="controlled_bridge" data-model-id="{{ result.model_of_a_controlled_bridge.id }}">{{ result.model_of_a_controlled_bridge }}</td>
+                        </tr>
+                        <tr>
+                            <th>Заводской номер управляемого моста</th>
+                            <td>{{ result.controlled_bridge_serial_number }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    {% else %}
                         <p>Нет результатов запроса</p>
                     {% endif %}
                 </div>
@@ -412,7 +317,6 @@
         <div>+7-8352-20-12-09, telegram</div>
         <div>Мой Силант 2022</div>
     </div>
-
 
     <div id="authModal" class="modal">
         <div class="modal-content">
@@ -433,7 +337,59 @@
             </form>
         </div>
     </div>
+
+    <div id="descriptionModal" class="modal">
+        <div class="modal-content">
+            <p id="descriptionText"></p>
+            <button onclick="document.getElementById('descriptionModal').style.display='none'">Закрыть</button>
+        </div>
+    </div>
+
     <script>
+// Добавляем обработчики событий для ячеек таблицы
+document.querySelectorAll('.details-table td').forEach(function(cell) {
+    const modelId = cell.dataset.modelId; // Получаем ID из data-атрибута
+    const modelType = cell.dataset.modelType; // Получаем тип модели из data-атрибута
+
+    // Проверяем, есть ли ID и тип модели, чтобы определить, что ячейка имеет описание
+    if (modelId && modelType) {
+        cell.classList.add('description-cell'); // Добавляем класс для стиля
+        cell.addEventListener('click', function(event) {
+            event.preventDefault(); // Предотвращаем стандартное поведение ссылки
+            getDescriptionForCell(cell); // Получаем описание для ячейки
+        });
+    }
+});
+
+// Функция для получения описания в зависимости от содержимого ячейки
+function getDescriptionForCell(cell) {
+    const modelId = cell.dataset.modelId; // Получаем ID из data-атрибута
+    const modelType = cell.dataset.modelType; // Получаем тип модели из data-атрибута
+
+    // Выполняем AJAX-запрос для получения описания
+    fetch(`/get_description/?model_type=${modelType}&model_id=${modelId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.description) {
+                showDetails(data.description);
+            } else {
+                console.log('Описание отсутствует.');
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+            showDetails('Ошибка при получении описания.');
+        });
+}
+
+// Функция для отображения описания
+function showDetails(description) {
+    if (description) {
+        document.getElementById('descriptionText').innerText = description;
+        document.getElementById('descriptionModal').style.display = 'flex';
+    }
+}
+
         // Закрытие модального окна при клике вне его
         window.onclick = function(event) {
             var modal = document.getElementById('authModal');
@@ -472,12 +428,12 @@
 
         // Отображение результатов поиска
         document.addEventListener('DOMContentLoaded', function() {
-        var hasResults = {{ has_results|yesno:"true,false" }};
-        var resultSection = document.getElementById('resultSection');
-        if (hasResults) {
-            resultSection.style.display = 'block';
-        }
-    });
+            var hasResults = {{ has_results|yesno:"true,false" }};
+            var resultSection = document.getElementById('resultSection');
+            if (hasResults) {
+                resultSection.style.display = 'block';
+            }
+        });
     </script>
 </body>
 </html>
