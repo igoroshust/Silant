@@ -53,10 +53,12 @@ def index_view(request):
 
         if user is not None:
             login(request, user)
-            return redirect('main')  # Перенаправление на главную страницу
+            return JsonResponse({'success': True})  # Успешная авторизация
         else:
-            messages.error(request, 'Неверный логин или пароль.')
-            return JsonResponse({'message': 'Неверный логин или пароль.'}, status=400)
+            # Отладочные сообщения
+            print(f"Попытка входа с именем пользователя: {username}")
+            print(f"Пароль: {password}")
+            return JsonResponse({'success': False, 'message': 'Неверный логин или пароль.'}, status=400)
 
     # Передаём информацию о наличии результатов в контекст
     has_results = bool(results)
