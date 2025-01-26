@@ -165,6 +165,12 @@
         .form-group button:hover {
             background-color: #a50a0d;
         }
+        .description-cell {
+            text-decoration: underline;
+            text-decoration-style: dashed;
+            cursor: pointer;
+        }
+
         @media (min-width: 600px) {
             .search-section {
                 flex-direction: row;
@@ -372,16 +378,24 @@
     <script>
         // Функция для отображения описания
         function showDetails(description) {
-            document.getElementById('descriptionText').innerText = description;
-            document.getElementById('descriptionModal').style.display = 'flex';
+            if (description) {
+                document.getElementById('descriptionText').innerText = description;
+                document.getElementById('descriptionModal').style.display = 'flex';
+            }
         }
 
         // Добавляем обработчики событий для ячеек таблицы
         document.querySelectorAll('.result-table td').forEach(function(cell) {
-            cell.addEventListener('click', function() {
-                const description = getDescriptionForCell(cell); // Получаем описание для ячейки
-                showDetails(description);
-            });
+            const modelId = cell.dataset.modelId; // Получаем ID из data-атрибута
+            const modelType = cell.dataset.modelType; // Получаем тип модели из data-атрибута
+
+            // Проверяем, есть ли ID и тип модели, чтобы определить, что ячейка имеет описание
+            if (modelId && modelType) {
+                cell.classList.add('description-cell'); // Добавляем класс для стиля
+                cell.addEventListener('click', function() {
+                    getDescriptionForCell(cell); // Получаем описание для ячейки
+                });
+            }
         });
 
         // Функция для получения описания в зависимости от содержимого ячейки
@@ -390,16 +404,20 @@
             const modelType = cell.dataset.modelType; // Получаем тип модели из data-атрибута
 
             // Выполняем AJAX-запрос для получения описания
-            fetch(`/get_description/?model_type=${modelType}&model_id=${modelId}`)
-                .then(response => response.json())
-                .then(data => {
-                    showDetails(data.description);
-                })
-                .catch(error => {
-                    console.error('Ошибка:', error);
-                    showDetails('Ошибка при получении описания.');
-                });
-        }
+    fetch(`/get_description/?model_type=${modelType}&model_id=${modelId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.description) {
+                showDetails(data.description);
+            } else {
+                console.log('Описание отсутствует.');
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+            showDetails('Ошибка при получении описания.');
+        });
+}
 
         // Функция для отображения выбранного таба
             function showTab(tabName) {
