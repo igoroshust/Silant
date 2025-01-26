@@ -40,10 +40,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'app',
+    'django.contrib.sites',
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
     'django_extensions',
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -141,8 +145,12 @@ AUTHENTICATION_BACKENDS = (
 # ACCOUNT_SIGNUP_REDIRECT_URL = ''
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'none' # (optional, mandatory)
-ACCOUNT_AUTHENTICATION_METHOD = 'username_email' # позволяет входить по имени пользователя или электронной почте
+# ACCOUNT_AUTHENTICATION_METHOD = 'username_email' # позволяет входить по имени пользователя или электронной почте
 ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = False
+ACCOUNT_SIGNUP_ENABLED = False
 ACCOUNT_USERNAME_REQUIRED = True
-ACCOUNT_PASSWORD_MIN_LENGTH = 8
+# ACCOUNT_PASSWORD_MIN_LENGTH = 8
+#ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
 LOGIN_REDIRECT_URL = 'main'
+LOGOUT_REDIRECT_URL = '/'

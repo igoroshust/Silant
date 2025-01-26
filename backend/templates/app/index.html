@@ -279,11 +279,11 @@
             <p>Проверьте комплектацию и технические характеристики техники Силант</p>
             <form method="get" action="{% url 'index' %}" class="search-section">
                 {{ form.as_p }}
-                <button>Кнопка (поиск)</button>
+                <button type="submit" id="searchBtn">Кнопка (поиск)</button>
             </form>
         </div>
 
-        {% if results %}
+
         <label>Результаты поиска</label>
         <div class="main-panel">
             <div class=""> <!-- section small-->
@@ -291,7 +291,7 @@
             </div>
             <div class="section">
                 <p style="text-align: center;">Таблица с данными</p>
-                <div class="result-section">
+                <div class="result-section" id="resultSection">
 <!--                    <table class="result-table">-->
 <!--                        <thead>-->
 <!--                            <tr>-->
@@ -392,7 +392,7 @@
 <!--            </tr>-->
              {% endfor %}
         </table>
-                    {% else %}
+                    {% if not results %}
                         <p>Нет результатов запроса</p>
                     {% endif %}
                 </div>
@@ -407,19 +407,27 @@
 
     <div id="authModal" class="modal">
         <div class="modal-content">
-            <form id="loginForm">
+            <form id="loginForm" method="post" action="{% url 'index' %}">
+                {% csrf_token %}
                 <div class="form-group">
                     <label for="login">Логин</label>
-                    <input type="text" id="login" placeholder="Введите логин">
+                    <input type="text" name="username" id="login" placeholder="Введите логин" required>
                 </div>
                 <div class="form-group">
                     <label for="password">Пароль</label>
-                    <input type="password" id="password" placeholder="Введите пароль">
+                    <input type="password" name="password" id="password" placeholder="Введите пароль" required>
                 </div>
                 <div class="form-group">
-                    <button type="submit" onclick="window.location.href='{% url 'main' %}'">Войти</button>
+                    <button type="submit">Войти</button>
                 </div>
             </form>
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
         </div>
     </div>
     <script>
@@ -434,8 +442,39 @@
         // Обработка отправки формы
         document.getElementById('loginForm').addEventListener('submit', function(event) {
             event.preventDefault(); // Предотвращаем стандартное поведение формы
-            window.location.href = "{% url 'main' %}"; // Переход на другую страницу
+
+            // Отправляем данные формы с помощью Fetch API
+            var formData = new FormData(this);
+
+            fetch(this.action, {
+    method: 'POST',
+    body: formData,
+    headers: {
+        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+    }
+})
+.then(response => {
+    if (response.ok) {
+        // Если вход успешен, перенаправляем на главную страницу
+        window.location.href = "{% url 'main' %}";
+    } else {
+        // Если вход не удался, показываем сообщение об ошибке
+        return response.json().then(data => {
+            document.querySelector('.messages').innerHTML = data.message; // Отображаем сообщение
         });
+    }
+})
+.catch(error => console.error('Ошибка:', error));
+        });
+
+        // Отображение результатов поиска
+        document.addEventListener('DOMContentLoaded', function() {
+        var hasResults = {{ has_results|yesno:"true,false" }};
+        var resultSection = document.getElementById('resultSection');
+        if (hasResults) {
+            resultSection.style.display = 'block';
+        }
+    });
     </script>
 </body>
 </html>

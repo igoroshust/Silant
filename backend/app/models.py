@@ -96,6 +96,7 @@ class Complaints(models.Model):
 
 class Client(models.Model):
     """Клиент"""
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=255, verbose_name='Имя')
     address = models.CharField(max_length=255, verbose_name='Адрес', default='Не указан')
 
@@ -168,6 +169,7 @@ class ControlledBridgeModel(models.Model):
 
 class ServiceCompany(models.Model):
     """Сервисная компания"""
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=120, verbose_name='Название')
     description = models.CharField(max_length=120, verbose_name='Описание')
 
@@ -176,7 +178,7 @@ class ServiceCompany(models.Model):
 
     class Meta:
         verbose_name = 'Сервисная компания'
-        verbose_name_plural = 'Сервисная компания'
+        verbose_name_plural = 'Сервисные компании'
 
 class MaintenanceType(models.Model):
     """Вид ТО"""
@@ -188,7 +190,7 @@ class MaintenanceType(models.Model):
 
     class Meta:
         verbose_name = 'Вид ТО'
-        verbose_name_plural = 'Вид ТО'
+        verbose_name_plural = 'Виды ТО'
 
 class FailureNode(models.Model):
     """Узел отказа"""
