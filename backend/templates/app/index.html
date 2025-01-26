@@ -269,7 +269,16 @@
     <div class="header">
         <div>логотип</div>
         <div>+7-8352-20-12-09, telegram</div>
-        <div><button onclick="document.getElementById('authModal').style.display='flex'">авторизация</button></div>
+        <div>
+             {% if user.is_authenticated %}
+                <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">Выйти</button>
+                </form>
+            {% else %}
+                <button onclick="document.getElementById('authModal').style.display='flex'">Авторизация</button>
+            {% endif %}
+        </div>
     </div>
     <div class="container">
         <div class="content">

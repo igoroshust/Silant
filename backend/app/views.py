@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib import messages
@@ -67,5 +67,10 @@ def index_view(request):
         'form': form,
         'results': results,
         'has_results': has_results,  # Передаем has_results в контекст
+        'user': request.user,
     })
 
+def logout_view(request):
+    """Выход из системы"""
+    logout(request)
+    return redirect('index')

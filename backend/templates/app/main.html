@@ -238,7 +238,12 @@
     <div class="header">
         <div>логотип</div>
         <div>+7-8352-20-12-09, telegram</div>
-        <div><button>Выйти</button></div>
+         <div>
+        <form action="{% url 'logout' %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit">Выйти</button>
+        </form>
+    </div>
     </div>
     <div class="container">
         <div class="content">
