@@ -397,7 +397,42 @@
             </form>
         </div>
     </div>
+
+        <div id="descriptionModal" class="modal">
+            <div class="modal-content">
+                <p id="descriptionText"></p>
+                <button onclick="document.getElementById('descriptionModal').style.display='none'">Закрыть</button>
+            </div>
+        </div>
         <script>
+
+            // Функция для отображения описания
+        function showDetails(description) {
+            document.getElementById('descriptionText').innerText = description;
+            document.getElementById('descriptionModal').style.display = 'flex';
+        }
+
+        // Добавляем обработчики событий для ячеек таблицы
+        document.querySelectorAll('.result-table td:not(:first-child)').forEach(function(cell) {
+            cell.addEventListener('click', function() {
+                const description = getDescriptionForCell(cell); // Получаем описание для ячейки
+                showDetails(description);
+            });
+        });
+
+        // Функция для получения описания в зависимости от содержимого ячейки
+        function getDescriptionForCell(cell) {
+            // Здесь вы можете добавить логику для получения описания из базы данных
+            // Например, если ячейка содержит модель, вы можете получить её описание
+            const model = cell.innerText; // Получаем текст ячейки
+            // Пример: возвращаем описание на основе модели
+            if (cell.dataset.label === 'Модель техники') {
+                return 'Описание модели техники: ' + model; // Замените на реальное описание
+            }
+            // Добавьте другие условия для других ячеек
+            return 'Описание не найдено';
+        }
+
             // Функция для отображения выбранного таба
             function showTab(tabName) {
                 document.getElementById('machines').style.display = 'none';

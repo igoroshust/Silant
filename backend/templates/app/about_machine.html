@@ -257,7 +257,6 @@
                                 <th data-label="">Заводской номер ведущего моста</th>
                                 <th data-label="">Модель управляемого моста</th>
                                 <th data-label="">Заводской номер управляемого моста</th>
-                                <th data-label="">Договор поставки</th>
                                 <th data-label="">Дата отгрузки с завода</th>
                                 <th data-label="">Грузополучатель</th>
                                 <th data-label="">Адрес поставки</th>
@@ -266,16 +265,15 @@
                                 <th data-label="">Сервисная компания</th>
                             </tr>
                             <tr>
-                                <td data-label="">{{ machine.model_of_equipment }}</td>
-                                <td data-label="">{{ machine.engine_model }}</td>
+                                <td data-label="" data-model-type="equipment" data-model-id="{{ machine.model_of_equipment.id }}">{{ machine.model_of_equipment }}</td>
+                                <td data-label="" data-model-type="engine" data-model-id="{{ machine.engine_model.id }}">{{ machine.engine_model }}</td>
                                 <td data-label="">{{ machine.engine_serial_number }}</td>
-                                <td data-label="">{{ machine.transmission_model }}</td>
+                                <td data-label="" data-model-type="transmission" data-model-id="{{ machine.transmission_model.id }}">{{ machine.transmission_model }}</td>
                                 <td data-label="">{{ machine.transmission_serial_number }}</td>
-                                <td data-label="">{{ machine.model_of_the_drivig_bridge }}</td>
+                                <td data-label="" data-model-type="driving_bridge" data-model-id="{{ machine.model_of_the_drivig_bridge.id }}">{{ machine.model_of_the_drivig_bridge }}</td>
                                 <td data-label="">{{ machine.driving_bridge_serial_number }}</td>
-                                <td data-label="">{{ machine.model_of_a_controlled_bridge }}</td>
+                                <td data-label="" data-model-type="controlled_bridge" data-model-id="{{ machine.model_of_a_controlled_bridge.id }}">{{ machine.model_of_a_controlled_bridge }}</td>
                                 <td data-label="">{{ machine.controlled_bridge_serial_number }}</td>
-                                <td data-label="">{{ machine.supply_contract }}</td>
                                 <td data-label="">{{ machine.date_of_shipment }}</td>
                                 <td data-label="">{{ machine.consignee }}</td>
                                 <td data-label="">{{ machine.delivery_address }}</td>
@@ -298,7 +296,7 @@
                             </tr>
                             {% for maintenance in maintenances %}
                             <tr>
-                                <td data-label="">{{ maintenance.type_of_maintenance }}</td>
+                                <td data-label="" data-model-type="maintenance_type" data-model-id="{{ maintenance.type_of_maintenance.id }}">{{ maintenance.type_of_maintenance }}</td>
                                 <td data-label="">{{ maintenance.date_of_maintenance }}</td>
                                 <td data-label="">{{ maintenance.maintenance_development }}</td>
                                 <td data-label="">{{ maintenance.order_number }}</td>
@@ -326,13 +324,13 @@
                             <tr>
                                 <td data-label="">{{ complaint.date_of_refusal }}</td>
                                 <td data-label="">{{ complaint.complaints_development }}</td>
-                                <td data-label="">{{ complaint.failure_node }}</td>
+                                <td data-label="" data-model-type="failure_node" data-model-id="{{ complaint.failure_node.id }}">{{ complaint.failure_node }}</td>
                                 <td data-label="">{{ complaint.description_of_the_failure }}</td>
-                                <td data-label="">{{ complaint.recovery_method }}</td>
+                                <td data-label="" data-model-type="recovery_method" data-model-id="{{ complaint.recovery_method.id }}">{{ complaint.recovery_method }}</td>
                                 <td data-label="">{{ complaint.used_spare_parts }}</td>
                                 <td data-label="">{{ complaint.date_of_restoration }}</td>
                                 <td data-label="">{{ complaint.machine_downtime }}</td>
-                                <td data-label="">{{ complaint.service_company }}</td>
+                                <td data-label="" data-model-type="service_company" data-model-id="{{ complaint.service_company.id }}">{{ complaint.service_company }}</td>
                             </tr>
                             {% endfor %}
                         </table>
@@ -364,7 +362,44 @@
         </div>
     </div>
 
+    <div id="descriptionModal" class="modal">
+        <div class="modal-content">
+            <p id="descriptionText"></p>
+            <button onclick="document.getElementById('descriptionModal').style.display='none'">Закрыть</button>
+        </div>
+    </div>
+
     <script>
+        // Функция для отображения описания
+        function showDetails(description) {
+            document.getElementById('descriptionText').innerText = description;
+            document.getElementById('descriptionModal').style.display = 'flex';
+        }
+
+        // Добавляем обработчики событий для ячеек таблицы
+        document.querySelectorAll('.result-table td').forEach(function(cell) {
+            cell.addEventListener('click', function() {
+                const description = getDescriptionForCell(cell); // Получаем описание для ячейки
+                showDetails(description);
+            });
+        });
+
+        // Функция для получения описания в зависимости от содержимого ячейки
+        function getDescriptionForCell(cell) {
+            const modelId = cell.dataset.modelId; // Получаем ID из data-атрибута
+            const modelType = cell.dataset.modelType; // Получаем тип модели из data-атрибута
+
+            // Выполняем AJAX-запрос для получения описания
+            fetch(`/get_description/?model_type=${modelType}&model_id=${modelId}`)
+                .then(response => response.json())
+                .then(data => {
+                    showDetails(data.description);
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                    showDetails('Ошибка при получении описания.');
+                });
+        }
 
         // Функция для отображения выбранного таба
             function showTab(tabName) {

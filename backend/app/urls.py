@@ -8,4 +8,5 @@ urlpatterns = [
     path('main/', main_view, name='main'),
     path('detail-machine/', detail_machine, name='detail_machine'),
     path('about_machine/<int:machine_id>/', about_machine, name='about_machine'),
+    path('get_description/', get_description, name='get_description'),
 ]

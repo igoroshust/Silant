@@ -114,3 +114,31 @@ def logout_view(request):
     """Выход из системы"""
     logout(request)
     return redirect('index')
+
+
+def get_description(request):
+    """Получение описания модели по типу и ID"""
+    model_type = request.GET.get('model_type')
+    model_id = request.GET.get('model_id')
+    description = ""
+
+    model_mapping = {
+        "equipment": EquipmentModel,
+        "engine": EngineModel,
+        "transmission": TransmissionModel,
+        "driving_bridge": DrivingBridgeModel,
+        "controlled_bridge": ControlledBridgeModel,
+        "maintenance_type": MaintenanceType,
+        "failure_node": FailureNode,
+        "recovery_method": RecoveryMethod,
+        "service_company": ServiceCompany,
+    }
+
+    if model_type in model_mapping:
+        try:
+            model = model_mapping[model_type].objects.get(id=model_id)
+            description = model.description
+        except model_mapping[model_type].DoesNotExist:
+            description = "Описание не найдено."
+
+    return JsonResponse({'description': description})
