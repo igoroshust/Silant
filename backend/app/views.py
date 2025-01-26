@@ -54,8 +54,22 @@ def main_view(request):
 def detail_machine(request):
     return render(request, '../templates/app/detail_machine.html')
 
-def about_machine(request):
-    return render(request, '../templates/app/about_machine.html')
+def about_machine(request, machine_id):
+    """Отображение деталей конкретной машины"""
+    try:
+        machine = Machine.objects.get(id=machine_id)
+        maintenances = Maintenance.objects.filter(machine=machine)  # Получаем данные о ТО для этой машины
+        complaints = Complaints.objects.filter(machine=machine)  # Получаем данные о рекламациях для этой машины
+    except Machine.DoesNotExist:
+        return render(request, '../templates/app/404.html')  # Страница 404, если машина не найдена
+
+    context = {
+        'machine': machine,
+        'maintenances': maintenances,
+        'complaints': complaints,
+    }
+
+    return render(request, '../templates/app/about_machine.html', context)
 
 def index_view(request):
     """Страница для клиента (неавторизованный пользователь)"""

@@ -290,7 +290,7 @@
                             </tr>
                             {% for machine in machines %}
                             <tr>
-                                <td data-label="">{{ machine.machine_serial_number }}</td>
+                                <td><a href="{% url 'about_machine' machine.id %}">{{ machine.machine_serial_number }}</a></td>
                                 <td data-label="">{{ machine.model_of_equipment }}</td>
                                 <td data-label="">{{ machine.engine_model }}</td>
                                 <td data-label="">{{ machine.engine_serial_number }}</td>
@@ -329,7 +329,7 @@
                             </tr>
                             {% for maintenance in maintenances %}
                             <tr>
-                                <td data-label="">{{ maintenance.machine }}</td>
+                                <td><a href="{% url 'about_machine' maintenance.machine.id %}">{{ maintenance.machine.machine_serial_number }}</a></td>
                                 <td data-label="">{{ maintenance.type_of_maintenance }}</td>
                                 <td data-label="">{{ maintenance.date_of_maintenance }}</td>
                                 <td data-label="">{{ maintenance.maintenance_development }}</td>
@@ -357,7 +357,7 @@
                             </tr>
                             {% for complaint in complaints %}
                             <tr>
-                                <td data-label="">{{ complaint.machine }}</td>
+                                <td><a href="{% url 'about_machine' complaint.machine.id %}">{{ complaint.machine.machine_serial_number }}</a></td>
                                 <td data-label="">{{ complaint.date_of_refusal }}</td>
                                 <td data-label="">{{ complaint.complaints_development }}</td>
                                 <td data-label="">{{ complaint.failure_node }}</td>

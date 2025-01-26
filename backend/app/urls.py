@@ -7,5 +7,5 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),
     path('main/', main_view, name='main'),
     path('detail-machine/', detail_machine, name='detail_machine'),
-    path('about-machine/', about_machine, name='about_machine'),
+    path('about_machine/<int:machine_id>/', about_machine, name='about_machine'),
 ]
