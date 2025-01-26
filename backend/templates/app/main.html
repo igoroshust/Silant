@@ -251,11 +251,12 @@
         </div>
         <label>Основная панель</label>
         <div class="main-panel">
-            <div class="section small">
-                <p>Клиент: {{ user.username }}</p>
+            <div class="section small" style="display: flex; justify-content: space-between;">
+                <p>Учётная запись: {{ user.username }}</p>
+                <p>{% if client_name %} {{ client_name }}{% endif %}{% if service_company_name %} – {{ service_company_name }}{% endif %}</p>
             </div>
             <div class="section small">
-                <p>Информация о комплектации</p>
+                <p>Информация о комплектации и технических характеристиках Вашей техники</p>
             </div>
             <div class="section">
                 <p style="text-align: center;">Таблица с данными</p>
@@ -306,6 +307,10 @@
                                 <td data-label="">{{ machine.equipment }}</td>
                                 <td data-label="">{{ machine.client }}</td>
                                 <td data-label="">{{ machine.service_company }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="10">Нет машин для отображения.</td>
                             </tr>
                             {% endfor %}
                         </table>

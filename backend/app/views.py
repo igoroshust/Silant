@@ -4,6 +4,9 @@ from django.http import JsonResponse
 from django.contrib import messages
 from .forms import SearchForm
 from .models import *
+# import logging
+#
+# logger = logging.getLogger(__name__)
 
 # def index(request):
 #     return render(request, '../templates/app/index.html')
@@ -12,15 +15,38 @@ from .models import *
 #     return render(request, '../templates/app/main.html')
 
 def main_view(request):
-    """Возвращаем данные каждой таблицы"""
-    machines = Machine.objects.all()
-    maintenances = Maintenance.objects.all()
-    complaints = Complaints.objects.all()
+    """Возвращаем данные каждой таблицы в зависимости от роли пользователя"""
+    client_name = None
+    service_company_name = None
+    machines = []
+    maintenances = []
+    complaints = []
+
+    if request.user.is_authenticated:
+        if request.user.role == 'manager':
+            machines = Machine.objects.all()  # Менеджер видит все машины
+            maintenances = Maintenance.objects.all()
+            complaints = Complaints.objects.all()
+        elif request.user.role == 'client':
+            client = request.user.client
+            machines = Machine.objects.filter(client=client)  # Клиент видит свои машины
+            maintenances = Maintenance.objects.filter(machine__client=client)
+            complaints = Complaints.objects.filter(machine__client=client)
+            client_name = client.name  # Получаем имя клиента
+        elif request.user.role == 'service':
+            if hasattr(request.user, 'servicecompany'):
+                service_company = request.user.servicecompany
+                machines = Machine.objects.filter(service_company=service_company)  # Сервисная организация видит свои машины
+                maintenances = Maintenance.objects.filter(service_company=service_company)
+                complaints = Complaints.objects.filter(service_company=service_company)
+                service_company_name = service_company.title  # Получаем название сервисной компании
 
     context = {
         'machines': machines,
         'maintenances': maintenances,
         'complaints': complaints,
+        'client_name': client_name,
+        'service_company_name': service_company_name,
     }
 
     return render(request, '../templates/app/main.html', context)
