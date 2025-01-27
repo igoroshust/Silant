@@ -135,6 +135,7 @@ body {
 .main-panel .section.small {
     padding: 5px;
     border: none;
+    text-align: center;
 }
 
 .details-table {

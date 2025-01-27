@@ -4,20 +4,20 @@
 
 {% block content %}
         <div class="content">
-            <p>Проверьте комплектацию и технические характеристики техники Силант</p>
+            <p>Проверьте комплектацию и технические характеристики техники Силант:</p>
             <form method="get" action="{% url 'index' %}" class="search-section">
                 {{ form.as_p }}
                 <button type="submit" id="searchBtn">Кнопка (поиск)</button>
             </form>
         </div>
-
-        <label>Результаты поиска</label>
+<div class="bk" style="margin-top: 25px;">
+<label>Результаты поиска</label>
 <div class="main-panel">
-    <div class="section">
+    <div class="section" style="text-align: center;">
                             {% if request.GET.query %}
                         Информация о комплектации и технических характеристиках Вашей техники:
                     {% else %}
-                        Здесь будут результаты поиска
+                        Здесь будет таблица с результатами поиска
                     {% endif %}
     </div>
     <div class="section" style="display: {% if request.GET.query %}block{% else %}none{% endif %};">
@@ -74,7 +74,7 @@
         </div>
     </div>
 </div>
-
+</div>
     <div id="authModal" class="modal">
         <div class="modal-content">
             <form id="loginForm" method="post" action="{% url 'index' %}">

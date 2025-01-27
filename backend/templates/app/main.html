@@ -3,9 +3,10 @@
 {% block title %}Экран после авторизации{% endblock %}
 
 {% block content %}
+
 <label>Основная панель</label>
         <div class="main-panel">
-            <div class="section small" style="display: flex; justify-content: space-between;">
+            <div class="section small" style="display: flex; justify-content: space-between; padding: 5px 15px;">
                 <p>Учётная запись: {{ user.username }}</p>
                 <p>
                     {% if client_name %}
@@ -19,8 +20,8 @@
                     {% endif %}
                 </p>
             </div>
-            <div class="section small">
-                <p>Информация о комплектации и технических характеристиках Вашей техники</p>
+            <div class="section small" style="text-align: center;">
+                <p>Информация о комплектации и технических характеристиках Вашей техники:</p>
             </div>
             <div class="section">
                 <p style="text-align: center;">Таблица с данными</p>
