@@ -72,6 +72,20 @@ def about_machine(request, machine_id):
         machine = Machine.objects.get(id=machine_id)
         maintenances = Maintenance.objects.filter(machine=machine)  # Получаем данные о ТО для этой машины
         complaints = Complaints.objects.filter(machine=machine)  # Получаем данные о рекламациях для этой машины
+
+        # Преобразование строковых дат в объекты datetime, если они еще не являются таковыми
+        if isinstance(machine.date_of_shipment, str):
+            machine.date_of_shipment = datetime.strptime(machine.date_of_shipment, '%b. %d, %Y, %I:%M %p')
+
+        for maintenance in maintenances:
+            if isinstance(maintenance.date_of_maintenance, str):
+                maintenance.date_of_maintenance = datetime.strptime(maintenance.date_of_maintenance,
+                                                                    '%b. %d, %Y, %I:%M %p')
+
+        for complaint in complaints:
+            if isinstance(complaint.date_of_refusal, str):
+                complaint.date_of_refusal = datetime.strptime(complaint.date_of_refusal, '%b. %d, %Y, %I:%M %p')
+
     except Machine.DoesNotExist:
         return render(request, '../templates/app/404.html')  # Страница 404, если машина не найдена
 
