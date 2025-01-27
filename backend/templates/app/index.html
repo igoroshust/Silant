@@ -256,10 +256,14 @@
         <label>Результаты поиска</label>
 <div class="main-panel">
     <div class="section">
-        <p>Информация о комплектации и технических характеристиках Вашей техники:</p>
+                            {% if request.GET.query %}
+                        Информация о комплектации и технических характеристиках Вашей техники:
+                    {% else %}
+                        Здесь будут результаты поиска
+                    {% endif %}
     </div>
-    <div class="section">
-        <p style="text-align: center;">Здесь будет таблица с результатами</p>
+    <div class="section" style="display: {% if request.GET.query %}block{% else %}none{% endif %};"> <!-- Показываем секцию только если есть запрос -->
+        <p style="text-align: center;">Таблица с данными</p>
         <div class="result-section" id="resultSection" style="display: {% if request.GET.query %}block{% else %}none{% endif %};">  <!-- Показываем блок, если есть параметр query -->
             {% if results %}
             <table class="details-table">
@@ -345,50 +349,50 @@
         </div>
     </div>
 
-    <script>
-// Добавляем обработчики событий для ячеек таблицы
-document.querySelectorAll('.details-table td').forEach(function(cell) {
-    const modelId = cell.dataset.modelId; // Получаем ID из data-атрибута
-    const modelType = cell.dataset.modelType; // Получаем тип модели из data-атрибута
+        <script>
+        // Добавляем обработчики событий для ячеек таблицы
+        document.querySelectorAll('.details-table td').forEach(function(cell) {
+            const modelId = cell.dataset.modelId; // Получаем ID из data-атрибута
+            const modelType = cell.dataset.modelType; // Получаем тип модели из data-атрибута
 
-    // Проверяем, есть ли ID и тип модели, чтобы определить, что ячейка имеет описание
-    if (modelId && modelType) {
-        cell.classList.add('description-cell'); // Добавляем класс для стиля
-        cell.addEventListener('click', function(event) {
-            event.preventDefault(); // Предотвращаем стандартное поведение ссылки
-            getDescriptionForCell(cell); // Получаем описание для ячейки
-        });
-    }
-});
-
-// Функция для получения описания в зависимости от содержимого ячейки
-function getDescriptionForCell(cell) {
-    const modelId = cell.dataset.modelId; // Получаем ID из data-атрибута
-    const modelType = cell.dataset.modelType; // Получаем тип модели из data-атрибута
-
-    // Выполняем AJAX-запрос для получения описания
-    fetch(`/get_description/?model_type=${modelType}&model_id=${modelId}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.description) {
-                showDetails(data.description);
-            } else {
-                console.log('Описание отсутствует.');
+            // Проверяем, есть ли ID и тип модели, чтобы определить, что ячейка имеет описание
+            if (modelId && modelType) {
+                cell.classList.add('description-cell'); // Добавляем класс для стиля
+                cell.addEventListener('click', function(event) {
+                    event.preventDefault(); // Предотвращаем стандартное поведение ссылки
+                    getDescriptionForCell(cell); // Получаем описание для ячейки
+                });
             }
-        })
-        .catch(error => {
-            console.error('Ошибка:', error);
-            showDetails('Ошибка при получении описания.');
         });
-}
 
-// Функция для отображения описания
-function showDetails(description) {
-    if (description) {
-        document.getElementById('descriptionText').innerText = description;
-        document.getElementById('descriptionModal').style.display = 'flex';
-    }
-}
+        // Функция для получения описания в зависимости от содержимого ячейки
+        function getDescriptionForCell(cell) {
+            const modelId = cell.dataset.modelId; // Получаем ID из data-атрибута
+            const modelType = cell.dataset.modelType; // Получаем тип модели из data-атрибута
+
+            // Выполняем AJAX-запрос для получения описания
+            fetch(`/get_description/?model_type=${modelType}&model_id=${modelId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.description) {
+                        showDetails(data.description);
+                    } else {
+                        console.log('Описание отсутствует.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                    showDetails('Ошибка при получении описания.');
+                });
+        }
+
+        // Функция для отображения описания
+        function showDetails(description) {
+            if (description) {
+                document.getElementById('descriptionText').innerText = description;
+                document.getElementById('descriptionModal').style.display = 'flex';
+            }
+        }
 
         // Закрытие модального окна при клике вне его
         window.onclick = function(event) {
@@ -425,7 +429,6 @@ function showDetails(description) {
             })
             .catch(error => console.error('Ошибка:', error));
         });
-
     </script>
 </body>
 </html>
