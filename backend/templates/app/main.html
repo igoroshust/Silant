@@ -258,7 +258,17 @@
         <div class="main-panel">
             <div class="section small" style="display: flex; justify-content: space-between;">
                 <p>Учётная запись: {{ user.username }}</p>
-                <p>{% if client_name %} {{ client_name }}{% endif %}{% if service_company_name %} – {{ service_company_name }}{% endif %}</p>
+                <p>
+                    {% if client_name %}
+                        Клиент: {{ client_name }}
+                    {% endif %}
+                    {% if service_company_name %}
+                        Сервисная компания: {{ service_company_name }}
+                    {% endif %}
+                    {% if not client_name and not service_company_name and request.user.role == 'manager' %}
+                        Менеджер компании "Силант"
+                    {% endif %}
+                </p>
             </div>
             <div class="section small">
                 <p>Информация о комплектации и технических характеристиках Вашей техники</p>

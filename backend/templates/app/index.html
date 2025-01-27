@@ -254,64 +254,64 @@
         </div>
 
         <label>Результаты поиска</label>
-        <div class="main-panel">
-            <div class="section">
-                <p>Информация о комплектации и технических характеристиках Вашей техники:</p>
-            </div>
-            <div class="section">
-                <p style="text-align: center;">Таблица с данными</p>
-                <div class="result-section" id="resultSection">
-                    {% if results %}
-                    <table class="details-table">
-                        {% for result in results %}
-                        <tr>
-                            <th>Заводской номер машины</th>
-                            <td data-model-type="machine">{{ result.machine_serial_number }}</td>
-                        </tr>
-                        <tr>
-                            <th>Модель техники</th>
-                            <td data-model-type="equipment" data-model-id="{{ result.model_of_equipment.id }}">{{ result.model_of_equipment }}</td>
-                        </tr>
-                        <tr>
-                            <th>Модель двигателя</th>
-                            <td data-model-type="engine" data-model-id="{{ result.engine_model.id }}">{{ result.engine_model }}</td>
-                        </tr>
-                        <tr>
-                            <th>Заводской номер двигателя</th>
-                            <td>{{ result.engine_serial_number }}</td>
-                        </tr>
-                        <tr>
-                            <th>Модель трансмиссии</th>
-                            <td data-model-type="transmission" data-model-id="{{ result.transmission_model.id }}">{{ result.transmission_model }}</td>
-                        </tr>
-                        <tr>
-                            <th>Заводской номер трансмиссии</th>
-                            <td>{{ result.transmission_serial_number }}</td>
-                        </tr>
-                        <tr>
-                            <th>Модель ведущего моста</th>
-                            <td data-model-type="driving_bridge" data-model-id="{{ result.model_of_the_drivig_bridge.id }}">{{ result.model_of_the_drivig_bridge }}</td>
-                        </tr>
-                        <tr>
-                            <th>Заводской номер ведущего моста</th>
-                            <td>{{ result.driving_bridge_serial_number }}</td>
-                        </tr>
-                        <tr>
-                            <th>Модель управляемого моста</th>
-                            <td data-model-type="controlled_bridge" data-model-id="{{ result.model_of_a_controlled_bridge.id }}">{{ result.model_of_a_controlled_bridge }}</td>
-                        </tr>
-                        <tr>
-                            <th>Заводской номер управляемого моста</th>
-                            <td>{{ result.controlled_bridge_serial_number }}</td>
-                        </tr>
-                        {% endfor %}
-                    </table>
-                    {% else %}
-                        <p>Нет результатов запроса</p>
-                    {% endif %}
-                </div>
-            </div>
+<div class="main-panel">
+    <div class="section">
+        <p>Информация о комплектации и технических характеристиках Вашей техники:</p>
+    </div>
+    <div class="section">
+        <p style="text-align: center;">Здесь будет таблица с результатами</p>
+        <div class="result-section" id="resultSection" style="display: {% if request.GET.query %}block{% else %}none{% endif %};">  <!-- Показываем блок, если есть параметр query -->
+            {% if results %}
+            <table class="details-table">
+                {% for result in results %}
+                <tr>
+                    <th>Заводской номер машины</th>
+                    <td data-model-type="machine">{{ result.machine_serial_number }}</td>
+                </tr>
+                <tr>
+                    <th>Модель техники</th>
+                    <td data-model-type="equipment" data-model-id="{{ result.model_of_equipment.id }}">{{ result.model_of_equipment }}</td>
+                </tr>
+                <tr>
+                    <th>Модель двигателя</th>
+                    <td data-model-type="engine" data-model-id="{{ result.engine_model.id }}">{{ result.engine_model }}</td>
+                </tr>
+                <tr>
+                    <th>Заводской номер двигателя</th>
+                    <td>{{ result.engine_serial_number }}</td>
+                </tr>
+                <tr>
+                    <th>Модель трансмиссии</th>
+                    <td data-model-type="transmission" data-model-id="{{ result.transmission_model.id }}">{{ result.transmission_model }}</td>
+                </tr>
+                <tr>
+                    <th>Заводской номер трансмиссии</th>
+                    <td>{{ result.transmission_serial_number }}</td>
+                </tr>
+                <tr>
+                    <th>Модель ведущего моста</th>
+                    <td data-model-type="driving_bridge" data-model-id="{{ result.model_of_the_drivig_bridge.id }}">{{ result.model_of_the_drivig_bridge }}</td>
+                </tr>
+                <tr>
+                    <th>Заводской номер ведущего моста</th>
+                    <td>{{ result.driving_bridge_serial_number }}</td>
+                </tr>
+                <tr>
+                    <th>Модель управляемого моста</th>
+                    <td data-model-type="controlled_bridge" data-model-id="{{ result.model_of_a_controlled_bridge.id }}">{{ result.model_of_a_controlled_bridge }}</td>
+                </tr>
+                <tr>
+                    <th>Заводской номер управляемого моста</th>
+                    <td>{{ result.controlled_bridge_serial_number }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+                <p>Нет результатов запроса</p>
+            {% endif %}
         </div>
+    </div>
+</div>
     </div>
     <div class="footer">
         <div>+7-8352-20-12-09, telegram</div>
@@ -426,14 +426,6 @@ function showDetails(description) {
             .catch(error => console.error('Ошибка:', error));
         });
 
-        // Отображение результатов поиска
-        document.addEventListener('DOMContentLoaded', function() {
-            var hasResults = {{ has_results|yesno:"true,false" }};
-            var resultSection = document.getElementById('resultSection');
-            if (hasResults) {
-                resultSection.style.display = 'block';
-            }
-        });
     </script>
 </body>
 </html>

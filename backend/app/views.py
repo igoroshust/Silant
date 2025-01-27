@@ -47,6 +47,7 @@ def main_view(request):
         'complaints': complaints,
         'client_name': client_name,
         'service_company_name': service_company_name,
+        'request': request,
     }
 
     return render(request, '../templates/app/main.html', context)
