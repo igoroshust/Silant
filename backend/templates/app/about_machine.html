@@ -230,6 +230,21 @@
             .main-panel .section.inline {
                 flex-direction: column;
             }
+            .details-table, .details-table th, .details-table td {
+                display: block;
+                width: 100%;
+            }
+            .details-table td {
+                border-bottom: 1px solid #163E6C !important;
+            }
+            .details-table th, .details-table td {
+                text-align: left;
+                padding: 10px;
+                border: none;
+            }
+            .details-table th:last-child, .details-table td:last-child {
+                border-bottom: none;
+            }
         }
     </style>
 </head>
@@ -266,6 +281,7 @@
 
                 <div class="result-section">
                     <div id="machines" style="display: none;" data-sort-order="asc">
+                        <div style="overflow-x: auto; white-space: nowrap;">
                    <table class="details-table">
                         <tr>
                             <th>Модель техники</th>
@@ -328,6 +344,7 @@
                             <td>{{ machine.service_company }}</td>
                         </tr>
                     </table>
+                            </div>
                     </div>
 
                     <div id="maintenances" style="display: none;">
@@ -336,6 +353,7 @@
                             <input type="text" id="filterMachineSerial" placeholder="Фильтр по зав. номеру машины..." onkeyup="filterMaintenances()" hidden>
                             <input type="text" id="filterServiceCompany" placeholder="Фильтр по сервисной компании..." onkeyup="filterMaintenances()">
                         </div>
+                        <div style="overflow-x: auto; white-space: nowrap;">
                         <table class="result-table" data-sort-order="asc">
                             <tr>
                                 <th data-label="">Вид ТО</th>
@@ -356,6 +374,7 @@
                             </tr>
                             {% endfor %}
                         </table>
+                            </div>
                     </div>
 
                     <div id="complaints" style="display: none;">
@@ -364,35 +383,37 @@
                             <input type="text" id="filterRecoveryMethod" placeholder="Фильтр по способу восстановления..." onkeyup="filterComplaints()">
                             <input type="text" id="filterServiceCompanyComplaints" placeholder="Фильтр по сервисной компании..." onkeyup="filterComplaints()">
                         </div>
+                        <div style="overflow-x: auto; white-space: nowrap;">
                     <table class="result-table" data-sort-order="asc">
-        <tr>
-            <th data-label="">Машина</th>
-            <th data-label="">Дата отказа <span onclick="sortTable('complaints', 2)">▲▼</span></th>
-            <th data-label="">Наработка</th>
-            <th data-label="">Узел отказа</th>
-            <th data-label="">Описание отказа</th>
-            <th data-label="">Способ восстановления</th>
-            <th data-label="">Используемые запчасти</th>
-            <th data-label="">Дата восстановления <span onclick="sortTable('complaints', 8)">▲▼</span></th></th>
-            <th data-label="">Время простоя техники</th>
-            <th data-label="">Сервисная компания</th>
-        </tr>
-        {% for complaint in complaints %}
-        <tr>
-            <td><a href="{% url 'about_machine' complaint.machine.id %}">{{ complaint.machine.machine_serial_number }}</a></td>
-            <td data-label="">{{ complaint.date_of_refusal|date:"d.m.Y" }}</td> <!-- Используем фильтр date -->
-            <td data-label="">{{ complaint.complaints_development }}</td>
-            <td data-model-type="failure_node" data-model-id="{{ complaint.failure_node.id }}">{{ complaint.failure_node }}</td>
-            <td data-label="">{{ complaint.description_of_the_failure }}</td>
-            <td data-model-type="recovery_method" data-model-id="{{ complaint.recovery_method.id }}">{{ complaint.recovery_method }}</td>
-            <td data-label="">{{ complaint.used_spare_parts }}</td>
-            <td data-label="">{{ complaint.date_of_restoration|date:"d.m.Y" }}</td> <!-- Используем фильтр date -->
-            <td data-label="">{{ complaint.machine_downtime }}</td>
-            <td data-model-type="service_company" data-model-id="{{ complaint.service_company.id }}">{{ complaint.service_company }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-</div>
+                        <tr>
+                            <th data-label="">Машина</th>
+                            <th data-label="">Дата отказа <span onclick="sortTable('complaints', 2)">▲▼</span></th>
+                            <th data-label="">Наработка</th>
+                            <th data-label="">Узел отказа</th>
+                            <th data-label="">Описание отказа</th>
+                            <th data-label="">Способ восстановления</th>
+                            <th data-label="">Используемые запчасти</th>
+                            <th data-label="">Дата восстановления <span onclick="sortTable('complaints', 8)">▲▼</span></th></th>
+                            <th data-label="">Время простоя техники</th>
+                            <th data-label="">Сервисная компания</th>
+                        </tr>
+                        {% for complaint in complaints %}
+                        <tr>
+                            <td><a href="{% url 'about_machine' complaint.machine.id %}">{{ complaint.machine.machine_serial_number }}</a></td>
+                            <td data-label="">{{ complaint.date_of_refusal|date:"d.m.Y" }}</td> <!-- Используем фильтр date -->
+                            <td data-label="">{{ complaint.complaints_development }}</td>
+                            <td data-model-type="failure_node" data-model-id="{{ complaint.failure_node.id }}">{{ complaint.failure_node }}</td>
+                            <td data-label="">{{ complaint.description_of_the_failure }}</td>
+                            <td data-model-type="recovery_method" data-model-id="{{ complaint.recovery_method.id }}">{{ complaint.recovery_method }}</td>
+                            <td data-label="">{{ complaint.used_spare_parts }}</td>
+                            <td data-label="">{{ complaint.date_of_restoration|date:"d.m.Y" }}</td> <!-- Используем фильтр date -->
+                            <td data-label="">{{ complaint.machine_downtime }}</td>
+                            <td data-model-type="service_company" data-model-id="{{ complaint.service_company.id }}">{{ complaint.service_company }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                            </div>
+                </div>
                 </div>
             </div>
         </div>

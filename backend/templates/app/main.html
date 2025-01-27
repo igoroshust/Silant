@@ -1,3 +1,5 @@
+{% load static %}
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -241,8 +243,8 @@
 </head>
 <body>
     <div class="header">
-        <div>логотип</div>
-        <div>+7-8352-20-12-09, telegram</div>
+        <div><img src="{% static 'logo.png' %}" style="width: 50px; height: 50px;"></div>
+        <div>+7 (835) 220-12-09</div>
          <div>
         <form action="{% url 'logout' %}" method="post" style="display:inline;">
             {% csrf_token %}
@@ -304,6 +306,7 @@
     </div>
 </div>
                     <div id="machines" style="display: none;">
+                        <div style="overflow-x: auto; white-space: nowrap;">
                         <table class="result-table" data-sort-order="asc">
                              <tr>
                                 <th data-label="">Заводской номер машины</th>
@@ -350,10 +353,11 @@
                             </tr>
                             {% endfor %}
                         </table>
+                        </div>
                     </div>
 
                     <div id="maintenances" style="display: none;">
-
+                        <div style="overflow-x: auto; white-space: nowrap;">
                         <table class="result-table" data-sort-order="asc">
                             <tr>
                                 <th data-label="">Машина</th>
@@ -376,9 +380,11 @@
                             </tr>
                             {% endfor %}
                         </table>
+                        </div>
                     </div>
 
                     <div id="complaints" style="display: none;">
+                        <div style="overflow-x: auto; white-space: nowrap;">
                         <table class="result-table" data-sort-order="asc">
                             <tr>
                                 <th data-label="">Машина</th>
@@ -407,14 +413,16 @@
                             </tr>
                             {% endfor %}
                         </table>
+                            </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="footer">
-        <div>+7-8352-20-12-09, telegram</div>
-        <div>Мой Силант 2022</div>
+        <div><img src="{% static 'logo.png' %}" style="width: 50px; height: 50px;"></div>
+        <div>+7 (835) 220-12-09</div>
+        <div>Мой Силант 2025</div>
     </div>
 
     <div id="authModal" class="modal">
