@@ -262,9 +262,9 @@
                         Здесь будут результаты поиска
                     {% endif %}
     </div>
-    <div class="section" style="display: {% if request.GET.query %}block{% else %}none{% endif %};"> <!-- Показываем секцию только если есть запрос -->
+    <div class="section" style="display: {% if request.GET.query %}block{% else %}none{% endif %};">
         <p style="text-align: center;">Таблица с данными</p>
-        <div class="result-section" id="resultSection" style="display: {% if request.GET.query %}block{% else %}none{% endif %};">  <!-- Показываем блок, если есть параметр query -->
+        <div class="result-section" id="resultSection">  <!-- Показываем блок, если есть параметр query -->
             {% if results %}
             <table class="details-table">
                 {% for result in results %}
