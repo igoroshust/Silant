@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib import messages
+from datetime import datetime
 from .forms import SearchForm
 from .models import *
 # import logging
@@ -21,6 +22,16 @@ def main_view(request):
     machines = []
     maintenances = []
     complaints = []
+
+    # Преобразование строковых дат в объекты datetime
+    for machine in machines:
+        machine.date_of_shipment = datetime.strptime(machine.date_of_shipment, '%b. %d, %Y, %I:%M %p')
+
+    for maintenance in maintenances:
+        maintenance.date_of_maintenance = datetime.strptime(maintenance.date_of_maintenance, '%b. %d, %Y, %I:%M %p')
+
+    for complaint in complaints:
+        complaint.date_of_refusal = datetime.strptime(complaint.date_of_refusal, '%b. %d, %Y, %I:%M %p')
 
     if request.user.is_authenticated:
         if request.user.role == 'manager':
@@ -86,6 +97,10 @@ def index_view(request):
             # Выполняем поиск в базе данных только если форма валидна
             results = Machine.objects.filter(machine_serial_number__icontains=query)
 
+    # Сортировка по умолчанию
+    if results:
+        results = results.order_by('date_of_shipment')  # Сортировка по дате отгрузки
+
     # Обработка авторизации
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -96,18 +111,11 @@ def index_view(request):
             login(request, user)
             return JsonResponse({'success': True})  # Успешная авторизация
         else:
-            # Отладочные сообщения
-            print(f"Попытка входа с именем пользователя: {username}")
-            print(f"Пароль: {password}")
             return JsonResponse({'success': False, 'message': 'Неверный логин или пароль.'}, status=400)
-
-    # Передаём информацию о наличии результатов в контекст
-    has_results = bool(results)
 
     return render(request, '../templates/app/index.html', {
         'form': form,
         'results': results,
-        'has_results': has_results,  # Передаем has_results в контекст
         'user': request.user,
     })
 
