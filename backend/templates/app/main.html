@@ -1,12 +1,12 @@
 {% extends 'app/base.html' %}
 
-{% block title %}Экран после авторизации{% endblock %}
+{% block title %}Основная панель{% endblock %}
 
 {% block content %}
 
 <label>Основная панель</label>
-        <div class="main-panel">
-            <div class="section small" style="display: flex; justify-content: space-between; padding: 5px 15px;">
+    <div class="main-panel">
+        <div class="section small" style="display: flex; justify-content: space-between; padding: 5px 15px;">
                 <p>Учётная запись: {{ user.username }}</p>
                 <p>
                     {% if client_name %}
@@ -23,6 +23,7 @@
             <div class="section small" style="text-align: center;">
                 <p>Информация о комплектации и технических характеристиках Вашей техники:</p>
             </div>
+
             <div class="section">
                 <p style="text-align: center;">Таблица с данными</p>
                 <div class="tabs">
@@ -31,28 +32,29 @@
                     <button onclick="showTab('complaints')">Рекламации</button>
                 </div>
 
-                <div class="result-section">
-                            <div class="filter-section">
-    <div id="machines-filters" style="display: block;">
-        <input type="text" id="filterMachineModel" placeholder="Фильтр по модели техники..." onkeyup="filterMachines()">
-        <input type="text" id="filterEngineModel" placeholder="Фильтр по модели двигателя..." onkeyup="filterMachines()">
-        <input type="text" id="filterTransmissionModel" placeholder="Фильтр по модели трансмиссии..." onkeyup="filterMachines()">
-        <input type="text" id="filterDrivingBridgeModel" placeholder="Фильтр по модели ведущего моста..." onkeyup="filterMachines()">
-        <input type="text" id="filterControlledBridgeModel" placeholder="Фильтр по модели управляемого моста..." onkeyup="filterMachines()">
-    </div>
+            <div class="result-section">
+                <div class="filter-section">
+                    <div id="machines-filters" style="display: block;">
+                        <input type="text" id="filterMachineModel" placeholder="Фильтр по модели техники..." onkeyup="filterMachines()">
+                        <input type="text" id="filterEngineModel" placeholder="Фильтр по модели двигателя..." onkeyup="filterMachines()">
+                        <input type="text" id="filterTransmissionModel" placeholder="Фильтр по модели трансмиссии..." onkeyup="filterMachines()">
+                        <input type="text" id="filterDrivingBridgeModel" placeholder="Фильтр по модели ведущего моста..." onkeyup="filterMachines()">
+                        <input type="text" id="filterControlledBridgeModel" placeholder="Фильтр по модели управляемого моста..." onkeyup="filterMachines()">
+                </div>
 
-    <div id="maintenances-filters" style="display: none;">
-        <input type="text" id="filterMaintenanceType" placeholder="Фильтр по виду ТО..." onkeyup="filterMaintenances()">
-        <input type="text" id="filterMachineSerial" placeholder="Фильтр по зав. номеру машины..." onkeyup="filterMaintenances()">
-        <input type="text" id="filterServiceCompany" placeholder="Фильтр по сервисной компании..." onkeyup="filterMaintenances()">
-    </div>
+                <div id="maintenances-filters" style="display: none;">
+                    <input type="text" id="filterMaintenanceType" placeholder="Фильтр по виду ТО..." onkeyup="filterMaintenances()">
+                    <input type="text" id="filterMachineSerial" placeholder="Фильтр по зав. номеру машины..." onkeyup="filterMaintenances()">
+                    <input type="text" id="filterServiceCompany" placeholder="Фильтр по сервисной компании..." onkeyup="filterMaintenances()">
+                </div>
 
-    <div id="complaints-filters" style="display: none;">
-        <input type="text" id="filterFailureNode" placeholder="Фильтр по узлу отказа..." onkeyup="filterComplaints()">
-        <input type="text" id="filterRecoveryMethod" placeholder="Фильтр по способу восстановления..." onkeyup="filterComplaints()">
-        <input type="text" id="filterServiceCompanyComplaints" placeholder="Фильтр по сервисной компании..." onkeyup="filterComplaints()">
-    </div>
-</div>
+                <div id="complaints-filters" style="display: none;">
+                    <input type="text" id="filterFailureNode" placeholder="Фильтр по узлу отказа..." onkeyup="filterComplaints()">
+                    <input type="text" id="filterRecoveryMethod" placeholder="Фильтр по способу восстановления..." onkeyup="filterComplaints()">
+                    <input type="text" id="filterServiceCompanyComplaints" placeholder="Фильтр по сервисной компании..." onkeyup="filterComplaints()">
+                </div>
+        </div>
+
                     <div id="machines" style="display: none;">
                         <div style="overflow-x: auto; white-space: nowrap;">
                         <table class="result-table" data-sort-order="asc">
@@ -166,9 +168,8 @@
                 </div>
             </div>
         </div>
-
-    <div id="authModal" class="modal">
-        <div class="modal-content">
+        <div id="authModal" class="modal">
+             <div class="modal-content">
             <form>
                 <div class="form-group">
                     <label for="login">Логин</label>
@@ -192,9 +193,7 @@
             </div>
         </div>
 
-
-        <script>
-
+<script>
             // Функция для отображения описания
             function showDetails(description) {
                 if (description) {

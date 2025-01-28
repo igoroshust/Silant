@@ -9,11 +9,6 @@ from .models import *
 #
 # logger = logging.getLogger(__name__)
 
-# def index(request):
-#     return render(request, '../templates/app/index.html')
-
-# def main(request):
-#     return render(request, '../templates/app/main.html')
 
 def main_view(request):
     """Возвращаем данные каждой таблицы в зависимости от роли пользователя"""
@@ -62,9 +57,6 @@ def main_view(request):
     }
 
     return render(request, '../templates/app/main.html', context)
-
-def detail_machine(request):
-    return render(request, '../templates/app/detail_machine.html')
 
 def about_machine(request, machine_id):
     """Отображение деталей конкретной машины"""
